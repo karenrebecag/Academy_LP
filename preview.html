@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ATOM Academy — Preview</title>
+
+  <!-- Estilos del bundle local (dev) -->
+  <link rel="stylesheet" href="/dist/landing.css" />
+
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #0a0a0a; }
+    .preview-label {
+      font-family: ui-monospace, monospace;
+      font-size: 10px;
+      color: #666;
+      padding: 8px 16px;
+      border-bottom: 1px solid #222;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preview-label">theme: light</div>
+  <div data-aa-mount data-aa-theme="light" data-aa-lang="es"></div>
+
+  <div class="preview-label">theme: dark</div>
+  <div data-aa-mount data-aa-theme="dark" data-aa-lang="es"></div>
+
+  <!-- Bundle local (npm run dev) -->
+  <script type="module" src="/dist/landing.js"></script>
+</body>
+</html>

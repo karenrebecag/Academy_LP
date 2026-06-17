@@ -1,0 +1,84 @@
+/* atom-academy · components. Button (patrón 038 OSMO), card, divider. */
+
+/* ─── Button (patrón OSMO: copias del label rotando sobre pivote lejano) ───────── */
+.aa-landing .aa-button {
+  --aa-btn-r: 20deg;        /* incremento de rotación por copia (button-rotate.ts) */
+  --aa-btn-y: 1100%;        /* pivote; lo recalcula JS según el largo del texto */
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 3em;
+  padding: 0 1.5em;
+  color: var(--aa-accent-fg);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: var(--aa-weight-bold);
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  border: none;
+  border-radius: var(--aa-radius-pill);
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+.aa-landing .aa-button--sm { height: 2.5em; padding: 0 1.2em; font-size: 0.875em; }
+
+.aa-landing .aa-button__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--aa-accent);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: background var(--aa-duration-s) var(--aa-ease-out);
+}
+.aa-landing .aa-button--secondary { color: var(--aa-bg); }
+.aa-landing .aa-button--secondary .aa-button__bg { background: var(--aa-fg); }
+.aa-landing .aa-button--ghost { color: var(--aa-fg); }
+.aa-landing .aa-button--ghost .aa-button__bg { background: transparent; border: 1.5px solid var(--aa-border); }
+
+/* Wrap: apila las copias del label en la misma celda de grid */
+.aa-landing .aa-button__label-wrap {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+.aa-landing .aa-button__label {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  transform-origin: 50% var(--aa-btn-y);
+}
+/* Pre-rotación: copia 1 visible, copia 2 fuera de vista (entra en el hover) */
+.aa-landing .aa-button__label:nth-of-type(1) { transform: rotate(calc(var(--aa-btn-r) * 0)); }
+.aa-landing .aa-button__label:nth-of-type(2) { transform: rotate(calc(var(--aa-btn-r) * -1)); }
+
+.aa-landing .aa-button:focus-visible {
+  box-shadow: 0 0 0 2px var(--aa-bg), 0 0 0 4px var(--aa-accent);
+}
+
+/* ─── Card ────────────────────────────────────────────────────────────────────── */
+.aa-landing .aa-card {
+  background: var(--aa-bg-subtle);
+  border: 1px solid var(--aa-border);
+  border-radius: var(--aa-radius-l);
+  padding: var(--aa-padding-m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--aa-gap-s);
+}
+
+/* ─── Divider ─────────────────────────────────────────────────────────────────── */
+.aa-landing .aa-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--aa-border);
+}

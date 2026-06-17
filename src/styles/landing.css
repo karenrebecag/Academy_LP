@@ -1,0 +1,41 @@
+/* atom-academy · landing page design system (OSMO-inspired, token-based). */
+/* Índice: esbuild inlinea estos @import en un solo dist/landing.css.          */
+/* Toda la especificidad vive bajo .aa-landing para no colisionar con Elementor. */
+
+@import "./tokens.css";
+@import "./typography.css";
+@import "./layout.css";
+@import "./components.css";
+@import "./hero.css";
+@import "./form.css";
+
+/* ─── Root wrapper ────────────────────────────────────────────────────────────── */
+.aa-landing {
+  font-family: var(--aa-font);
+  font-size: var(--aa-size-font);
+  color: var(--aa-fg);
+  background: var(--aa-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Dark theme override ─────────────────────────────────────────────────────── */
+.aa-landing[data-aa-theme="dark"] {
+  --aa-bg:        var(--aa-neutral-950);
+  --aa-bg-subtle: var(--aa-neutral-900);
+  --aa-fg:        var(--aa-neutral-50);
+  --aa-fg-muted:  var(--aa-neutral-400);
+  --aa-fg-subtle: var(--aa-neutral-600);
+  --aa-border:    var(--aa-neutral-800);
+  --aa-input-bg:  var(--aa-neutral-850);
+}
+
+/* ─── Utilities ───────────────────────────────────────────────────────────────── */
+.aa-landing .aa-text-center  { text-align: center; }
+.aa-landing .aa-text-balance { text-wrap: balance; }
+.aa-landing .aa-text-accent  { color: var(--aa-accent); }
+.aa-landing .aa-flex-col     { display: flex; flex-direction: column; }
+.aa-landing .aa-flex-center  { display: flex; align-items: center; justify-content: center; }
+.aa-landing .aa-gap-s        { gap: var(--aa-gap-s); }
+.aa-landing .aa-gap-m        { gap: var(--aa-gap-m); }
+.aa-landing .aa-gap-l        { gap: var(--aa-gap-l); }

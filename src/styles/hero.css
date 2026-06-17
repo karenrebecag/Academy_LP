@@ -1,0 +1,95 @@
+/* atom-academy · hero. Maquetación recreada del home-hero de OSMO. */
+/* Estructura: spacer nav → bg con línea vertical central → content centrado en columna. */
+
+.aa-landing .aa-hero {
+  z-index: 2;
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  min-height: 100svh;
+}
+
+/* Spacer superior — replica padding-hero variant "nav-large" de OSMO */
+.aa-landing .aa-hero__padding {
+  flex: none;
+  height: calc(var(--aa-nav-height) + max(6.666em, 20svh));
+}
+
+/* Background: línea vertical 1px centrada (decoración mínima de OSMO) */
+.aa-landing .aa-hero__bg {
+  z-index: 0;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+.aa-landing .aa-hero__bg-line {
+  width: 1px;
+  height: 100%;
+  background-color: var(--aa-border);
+}
+
+/* El container ocupa el espacio restante y centra el content verticalmente */
+.aa-landing .aa-hero .aa-container {
+  z-index: 1;
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* Content: columna centrada con gap responsive (max(1.5em, 4.5svh) de OSMO) */
+.aa-landing .aa-hero__content {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: max(1.5em, 4.5svh);
+}
+
+/* Title row — fila centrada en desktop, columna en tablet/mobile (como OSMO) */
+.aa-landing .aa-hero__title-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--aa-gap-l);
+  text-align: center;
+}
+@media screen and (max-width: 991px) {
+  .aa-landing .aa-hero__title-row { flex-flow: column; gap: 0; }
+}
+
+/* Description row — subheading centrado, max-width acotado, con fade gradient sutil */
+.aa-landing .aa-hero__description-row {
+  width: 100%;
+  max-width: 33em;
+  margin-inline: auto;
+  padding-block: 2em;
+  text-align: center;
+  background-image: linear-gradient(
+    180deg,
+    transparent,
+    var(--aa-bg-subtle) 20%,
+    var(--aa-bg-subtle) 80%,
+    transparent
+  );
+}
+.aa-landing .aa-hero__description-row p {
+  font-size: var(--aa-text-m);
+  line-height: 1.2;
+  color: var(--aa-fg);
+}
+@media screen and (max-width: 767px) {
+  .aa-landing .aa-hero__description-row { padding-top: 0; }
+}
+
+/* Button row — reemplaza al marquee de OSMO, centrado */
+.aa-landing .aa-hero__button-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--aa-gap-s);
+}
