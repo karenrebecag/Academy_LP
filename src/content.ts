@@ -42,6 +42,15 @@ export interface ChecklistContent {
   cta?: { label: string; href: string };
 }
 
+export interface InfoContent {
+  kind: 'info';
+  id?: string;
+  theme: SectionTheme;
+  scribble?: string; // eyebrow flotante (coral) tipo "scribble" de OSMO
+  heading: string; // statement largo que responde la pregunta
+  items: { title: string; desc: string }[]; // filas label (izq) + párrafo (der)
+}
+
 export interface FaqContent {
   kind: 'faq';
   id?: string;
@@ -64,6 +73,7 @@ export type SectionContent =
   | ProseContent
   | CardsContent
   | ChecklistContent
+  | InfoContent
   | FaqContent
   | CtaContent;
 
@@ -166,19 +176,28 @@ export const SECTIONS: SectionContent[] = [
     ],
   },
   {
-    kind: 'checklist',
+    kind: 'info',
     theme: 'light',
-    eyebrow: 'El día a día',
-    heading: '¿Qué hace un Experto en WhatsApp Marketing?',
-    marker: 'check',
+    scribble: '¿Qué hace?',
+    heading:
+      'Un Experto en WhatsApp Marketing convierte conversaciones en crecimiento: diseña la experiencia, optimiza los mensajes y conecta cada chat con la estrategia comercial.',
     items: [
-      'Diseña journeys conversacionales.',
-      'Optimiza campañas Click to WhatsApp.',
-      'Crea mensajes que califican, educan y convierten.',
-      'Integra WhatsApp con CRM, automatización e IA.',
-      'Mide la conversión real de las conversaciones.',
-      'Recupera leads que dejaron de responder.',
-      'Ayuda a marketing y ventas a trabajar sobre el mismo canal, con más contexto y mejores resultados.',
+      {
+        title: 'Diseña la conversación',
+        desc: 'Crea journeys conversacionales y mensajes que califican, educan y convierten, llevando al lead del primer clic a la venta sin fricción.',
+      },
+      {
+        title: 'Optimiza la captación',
+        desc: 'Lanza y afina campañas Click to WhatsApp para que cada anuncio termine en una conversación real, sin perder leads en el camino.',
+      },
+      {
+        title: 'Integra datos e IA',
+        desc: 'Conecta WhatsApp con el CRM, la automatización y la IA para medir la conversión real y recuperar los leads que dejaron de responder.',
+      },
+      {
+        title: 'Alinea marketing y ventas',
+        desc: 'Hace que ambos equipos trabajen sobre el mismo canal, con más contexto y mejores resultados.',
+      },
     ],
   },
   {

@@ -1,0 +1,95 @@
+/* atom-academy · sección info — réplica del layout .info de OSMO.
+   Columna gráfica (small-col) + columna grande con scribble flotante coral,
+   statement y lista de filas label (izq) / párrafo (der) separadas por borde superior. */
+
+.aa-landing .aa-info__wrap {
+  display: flex;
+  gap: var(--aa-gap-xl);
+  align-items: flex-start;
+}
+
+.aa-landing .aa-info__small-col {
+  flex: none;
+  width: 100%;
+  max-width: 22em;
+}
+
+.aa-landing .aa-info__graphic {
+  width: 8em;
+  color: var(--aa-accent);
+}
+.aa-landing .aa-info__graphic svg { width: 100%; height: auto; display: block; }
+
+.aa-landing .aa-info__large-col {
+  position: relative;
+  width: 100%;
+  max-width: 46em;
+}
+
+/* Scribble flotante: eyebrow mono + flecha dibujada, anclado a la izquierda del title */
+.aa-landing .aa-info__scribble {
+  position: absolute;
+  top: 0;
+  left: -5.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--aa-gap-s);
+  color: var(--aa-color-coral);
+}
+.aa-landing .aa-info__scribble-text {
+  font-family: var(--aa-font-scribble);
+  font-size: var(--aa-text-m);
+  line-height: 1;
+  white-space: nowrap;
+}
+.aa-landing .aa-info__arrow { width: 1.75em; }
+.aa-landing .aa-info__arrow svg { width: 100%; height: auto; display: block; }
+
+.aa-landing .aa-info__title { max-width: 16em; }
+
+.aa-landing .aa-info__list {
+  list-style: none;
+  margin: var(--aa-gap-xl) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--aa-gap-l);
+}
+
+.aa-landing .aa-info__li {
+  display: flex;
+  gap: var(--aa-gap-m);
+  align-items: flex-start;
+  padding-top: var(--aa-gap-s);
+  border-top: 1px solid var(--aa-border);
+}
+
+.aa-landing .aa-info__li-title {
+  flex: none;
+  width: 14em;
+}
+
+.aa-landing .aa-info__li-desc { margin: 0; }
+
+@media screen and (max-width: 991px) {
+  .aa-landing .aa-info__wrap { gap: var(--aa-gap-l); }
+  .aa-landing .aa-info__small-col { max-width: 16em; }
+  .aa-landing .aa-info__li { flex-direction: column; gap: var(--aa-gap-xs); }
+  .aa-landing .aa-info__li-title { width: auto; }
+}
+
+@media screen and (max-width: 767px) {
+  .aa-landing .aa-info__wrap { flex-direction: column; gap: var(--aa-gap-l); }
+  .aa-landing .aa-info__small-col { max-width: none; }
+  .aa-landing .aa-info__graphic { margin-inline: auto; }
+  .aa-landing .aa-info__large-col { max-width: none; }
+  .aa-landing .aa-info__scribble {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    left: auto;
+    margin-bottom: var(--aa-gap-m);
+  }
+  .aa-landing .aa-info__title { max-width: none; }
+}

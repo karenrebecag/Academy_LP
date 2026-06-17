@@ -1,5 +1,10 @@
 /* atom-academy · typography. Escala híbrida clamp() — robusta dentro de Elementor. */
 
+/* Display: todos los headings usan Grift (carácter de marca). */
+.aa-landing :is(.aa-h-xxl, .aa-h-xl, .aa-h-l, .aa-h-ml, .aa-h-m) {
+  font-family: var(--aa-font-display);
+}
+
 .aa-landing .aa-h-xxl {
   font-size: var(--aa-text-xxl);
   font-weight: var(--aa-weight-extrabold);

@@ -80,8 +80,10 @@
   --aa-stagger: 0.05s;
 
   /* ─── Typography ──────────────────────────────────────────────────────────── */
-  --aa-font:      inherit;
-  --aa-font-mono: ui-monospace, 'Cascadia Code', monospace;
+  --aa-font:         'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --aa-font-display: 'Grift', 'Inter Tight', Georgia, serif;
+  --aa-font-mono:    'Interval', ui-monospace, 'Cascadia Code', monospace;
+  --aa-font-scribble: 'Gantol', 'Brush Script MT', cursive;
 
   --aa-text-xxl: clamp(3rem,    5vw,   5.5rem);
   --aa-text-xl:  clamp(2.25rem, 4vw,   4rem);

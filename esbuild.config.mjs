@@ -1,4 +1,9 @@
 import * as esbuild from 'esbuild';
+import { cpSync } from 'node:fs';
+
+// Self-hosted fonts: copia src/fonts → dist/fonts. Las @font-face referencian
+// ./fonts/... (relativo a dist/landing.css), así que deben vivir junto al CSS.
+cpSync('src/fonts', 'dist/fonts', { recursive: true });
 
 // Bundle TS + GSAP + CSS hacia dist/. jsDelivr sirve el tag versionado.
 const shared = {
@@ -21,6 +26,8 @@ const cssOptions = {
   entryPoints: ['src/styles/landing.css'],
   outfile: 'dist/landing.css',
   minify: true,
+  // Conserva las URLs de fuentes literales (./fonts/...) en vez de intentar empaquetarlas.
+  external: ['*.woff2', '*.otf'],
 };
 
 const watch = process.argv.includes('--watch');

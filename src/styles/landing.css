@@ -2,6 +2,10 @@
 /* Índice: esbuild inlinea estos @import en un solo dist/landing.css.          */
 /* Toda la especificidad vive bajo .aa-landing para no colisionar con Elementor. */
 
+/* Inter Tight (body) desde Google Fonts — debe ir primero (regla @import). */
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap');
+
+@import "./fonts.css";
 @import "./tokens.css";
 @import "./typography.css";
 @import "./layout.css";
@@ -9,6 +13,7 @@
 @import "./hero.css";
 @import "./sections.css";
 @import "./accordion.css";
+@import "./info.css";
 @import "./slider.css";
 @import "./form.css";
 @import "./section-theme.css";
@@ -22,6 +27,7 @@
   background: var(--aa-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip; /* contiene cualquier desborde horizontal (slider, scribble) sin romper sticky */
 }
 
 /* Dark theme global + section themes (strips) viven en section-theme.css. */
