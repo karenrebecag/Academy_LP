@@ -7,7 +7,12 @@
 @import "./layout.css";
 @import "./components.css";
 @import "./hero.css";
+@import "./sections.css";
+@import "./accordion.css";
+@import "./slider.css";
 @import "./form.css";
+@import "./section-theme.css";
+@import "./lenis.css";
 
 /* ─── Root wrapper ────────────────────────────────────────────────────────────── */
 .aa-landing {
@@ -19,16 +24,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ─── Dark theme override ─────────────────────────────────────────────────────── */
-.aa-landing[data-aa-theme="dark"] {
-  --aa-bg:        var(--aa-neutral-950);
-  --aa-bg-subtle: var(--aa-neutral-900);
-  --aa-fg:        var(--aa-neutral-50);
-  --aa-fg-muted:  var(--aa-neutral-400);
-  --aa-fg-subtle: var(--aa-neutral-600);
-  --aa-border:    var(--aa-neutral-800);
-  --aa-input-bg:  var(--aa-neutral-850);
-}
+/* Dark theme global + section themes (strips) viven en section-theme.css. */
 
 /* ─── Utilities ───────────────────────────────────────────────────────────────── */
 .aa-landing .aa-text-center  { text-align: center; }

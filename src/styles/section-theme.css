@@ -1,0 +1,33 @@
+/* atom-academy · section themes (strips claro/oscuro). Adaptado del data-theme-section
+   de OSMO. OSMO usa selectores explícitos por componente; aquí remapeamos los tokens
+   --aa-* por sección: como todos los componentes leen de tokens, se adaptan solos. */
+
+/* Token set OSCURO — compartido por el tema global y las secciones dark */
+.aa-landing[data-aa-theme="dark"],
+.aa-landing [data-aa-section-theme="dark"] {
+  --aa-bg:        var(--aa-neutral-950);
+  --aa-bg-subtle: var(--aa-neutral-900);
+  --aa-fg:        var(--aa-neutral-50);
+  --aa-fg-muted:  var(--aa-neutral-400);
+  --aa-fg-subtle: var(--aa-neutral-600);
+  --aa-border:    var(--aa-neutral-800);
+  --aa-input-bg:  var(--aa-neutral-850);
+}
+
+/* Token set CLARO — re-asegura los valores base cuando una sección light
+   vive dentro de un tema global dark (estrato autónomo) */
+.aa-landing [data-aa-section-theme="light"] {
+  --aa-bg:        var(--aa-neutral-50);
+  --aa-bg-subtle: var(--aa-neutral-100);
+  --aa-fg:        var(--aa-neutral-950);
+  --aa-fg-muted:  var(--aa-neutral-600);
+  --aa-fg-subtle: var(--aa-neutral-400);
+  --aa-border:    var(--aa-neutral-200);
+  --aa-input-bg:  var(--aa-neutral-200);
+}
+
+/* Cada sección con tema pinta su propio strip a partir de los tokens remapeados */
+.aa-landing [data-aa-section-theme] {
+  background-color: var(--aa-bg);
+  color: var(--aa-fg);
+}

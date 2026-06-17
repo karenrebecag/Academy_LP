@@ -1,0 +1,20 @@
+/* atom-academy · slider draggable. El track se arrastra en X (GSAP Draggable). */
+
+.aa-landing .aa-slider {
+  overflow: hidden;
+  cursor: grab;
+}
+.aa-landing .aa-slider:active { cursor: grabbing; }
+
+.aa-landing .aa-slider__track {
+  display: flex;
+  gap: var(--aa-gap-m);
+  width: max-content;
+  padding-block: 0.5rem; /* aire para sombras/hover */
+  will-change: transform;
+}
+
+.aa-landing .aa-slider__item {
+  flex: 0 0 auto;
+  width: min(360px, 78vw);
+}

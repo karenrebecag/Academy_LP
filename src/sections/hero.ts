@@ -9,6 +9,7 @@ export function renderHero(root: Element): void {
   const hero = document.createElement('section');
   hero.className = 'aa-hero';
   hero.setAttribute('data-aa-intro', ''); // anima al montar (no al hacer scroll)
+  hero.setAttribute('data-aa-section-theme', 'light'); // strip claro
 
   // Spacer del nav (replica padding-hero "nav-large")
   const padding = document.createElement('div');

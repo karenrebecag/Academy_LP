@@ -4,8 +4,11 @@
 export type SectionVariant = 'default' | 'hero' | 'sm';
 export type ContainerSize = 'default' | 'm' | 'sm' | 's';
 
+export type SectionTheme = 'light' | 'dark';
+
 interface SectionOptions {
   variant?: SectionVariant;
+  theme?: SectionTheme;
   className?: string;
   children?: Node[];
 }
@@ -28,9 +31,10 @@ function cx(...parts: (string | false | undefined)[]): string {
 }
 
 export function renderSection(opts: SectionOptions = {}): HTMLElement {
-  const { variant = 'default', className, children = [] } = opts;
+  const { variant = 'default', theme, className, children = [] } = opts;
   const el = document.createElement('section');
   el.className = cx('aa-section', variant !== 'default' && `aa-section--${variant}`, className);
+  if (theme) el.setAttribute('data-aa-section-theme', theme);
   children.forEach((c) => el.appendChild(c));
   return el;
 }

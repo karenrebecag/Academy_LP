@@ -9,7 +9,7 @@
 // Valores canónicos de OSMO: words yPercent 100 + rotate 10 (transformOrigin bottom left),
 // reveal duration 1.2 / ease expo.out / stagger 0.05; scroll start "clamp(top 80%)" once.
 
-import { gsap, SplitText, STAGGER } from './gsap-env';
+import { gsap, ScrollTrigger, SplitText, STAGGER } from './gsap-env';
 import { initButtonRotate } from './button-rotate';
 
 // Timeline de entrada de OSMO: duration 1.2, ease expo.out (distinto del default 0.6/osmo).
@@ -101,4 +101,6 @@ export function initMotion(root: Element): void {
   initButtonRotate(root);
   playIntro(root);
   initScrollReveals(root);
+  // Recalcula posiciones de los triggers (importante con Lenis activo).
+  ScrollTrigger.refresh();
 }

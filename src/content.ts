@@ -1,0 +1,262 @@
+// Contenido de la landing (brief WhatsApp Marketing). Una sola fuente de copy.
+// El theme de cada sección sigue la narrativa (no alternancia mecánica):
+//   dark = momentos de peso (tesis, visión, problema, cierre); light = el resto.
+
+import type { SectionTheme } from './ui/layout';
+
+export interface ProseContent {
+  kind: 'prose' | 'statement';
+  id?: string;
+  theme: SectionTheme;
+  eyebrow?: string;
+  heading: string;
+  paragraphs: string[];
+  cta?: { label: string; href: string };
+}
+
+export interface CardsContent {
+  kind: 'cards';
+  id?: string;
+  theme: SectionTheme;
+  eyebrow?: string;
+  heading: string;
+  layout?: 'grid' | 'slider';
+  cards: {
+    title: string;
+    desc: string;
+    tag?: string;
+    variant?: 'dark' | 'electric' | 'purple' | 'neutral'; // variantes reales de product-card
+  }[];
+}
+
+export interface ChecklistContent {
+  kind: 'checklist';
+  id?: string;
+  theme: SectionTheme;
+  eyebrow?: string;
+  heading: string;
+  intro?: string[];
+  items: string[];
+  marker?: 'check' | 'dot';
+  outro?: string[];
+  cta?: { label: string; href: string };
+}
+
+export interface FaqContent {
+  kind: 'faq';
+  id?: string;
+  theme: SectionTheme;
+  eyebrow?: string;
+  heading: string;
+  items: { q: string; a: string }[];
+}
+
+export interface CtaContent {
+  kind: 'cta';
+  id?: string;
+  theme: SectionTheme;
+  heading: string;
+  paragraphs?: string[];
+  cta: { label: string; href: string };
+}
+
+export type SectionContent =
+  | ProseContent
+  | CardsContent
+  | ChecklistContent
+  | FaqContent
+  | CtaContent;
+
+const WAITLIST = '#aa-waitlist';
+
+// Secciones entre el hero (#1) y el form (#13). Orden del brief.
+export const SECTIONS: SectionContent[] = [
+  {
+    kind: 'prose',
+    theme: 'light',
+    eyebrow: 'El cambio',
+    heading: '¿Por qué convertirte en WhatsApp Marketer?',
+    paragraphs: [
+      'Porque el marketing cambió. Antes, el desafío era generar tráfico. Después, fue generar leads. Hoy, el verdadero desafío es convertir conversaciones.',
+      'Los usuarios ya no quieren llenar formularios y esperar. Quieren escribir, recibir respuesta inmediata, resolver dudas y avanzar por WhatsApp.',
+      'Pero para que eso funcione, no alcanza con “tener WhatsApp”. Se necesita estrategia.',
+      'Un WhatsApp Marketer entiende cómo convertir ese canal en una máquina de crecimiento: conecta anuncios, mensajes, automatización, IA, CRM, datos y ventas en una experiencia que realmente convierte.',
+    ],
+  },
+  {
+    kind: 'statement',
+    theme: 'dark',
+    eyebrow: 'La tesis',
+    heading: 'WhatsApp Marketing no es enviar mensajes. Es diseñar conversaciones que venden.',
+    paragraphs: [
+      'En esta formación vas a aprender cómo pensar WhatsApp como un canal estratégico dentro del funnel comercial. Desde el primer clic en una campaña hasta la calificación del lead, el seguimiento, la recuperación de oportunidades inactivas y la medición real de resultados.',
+      'Porque cada conversación puede ser una venta. Pero solo si está diseñada para avanzar.',
+    ],
+  },
+  {
+    kind: 'cards',
+    theme: 'light',
+    eyebrow: 'Programa',
+    heading: 'Lo que vas a aprender',
+    layout: 'slider',
+    cards: [
+      {
+        variant: 'dark',
+        tag: 'Base',
+        title: 'Fundamentos',
+        desc: 'Por qué WhatsApp es hoy uno de los canales clave de marketing y ventas en LATAM.',
+      },
+      {
+        variant: 'electric',
+        tag: 'Estrategia',
+        title: 'Estrategia conversacional',
+        desc: 'Journeys, flujos y mensajes que llevan al lead del interés a la compra.',
+      },
+      {
+        variant: 'purple',
+        tag: 'Captación',
+        title: 'Click to WhatsApp',
+        desc: 'Campañas que llevan al usuario directo a WhatsApp sin perder leads tras el primer mensaje.',
+      },
+      {
+        variant: 'neutral',
+        tag: 'IA',
+        title: 'Automatización e IA',
+        desc: 'IA para responder, calificar, agendar y recuperar leads sin perder personalización.',
+      },
+      {
+        variant: 'dark',
+        tag: 'Datos',
+        title: 'Trazabilidad y datos',
+        desc: 'Mide lo que pasa dentro de WhatsApp y conéctalo con tu CRM para optimizar campañas.',
+      },
+      {
+        variant: 'electric',
+        tag: 'Conversión',
+        title: 'Optimización comercial',
+        desc: 'Mejora tiempos de respuesta, prioriza leads y recupera oportunidades inactivas.',
+      },
+    ],
+  },
+  {
+    kind: 'checklist',
+    theme: 'light',
+    eyebrow: 'Para quién',
+    heading: 'Esta formación es para ti si…',
+    marker: 'check',
+    items: [
+      'Trabajas en marketing, ventas, growth, performance, CRM, lifecycle, customer experience o revenue.',
+      'Gestionas campañas que llevan leads a WhatsApp.',
+      'Quieres reducir la pérdida de oportunidades después del clic.',
+      'Necesitas mejorar la conversión entre lead, conversación y venta.',
+      'Buscas integrar WhatsApp con IA, automatización, CRM y datos.',
+      'Quieres desarrollar una habilidad cada vez más importante para los equipos comerciales modernos.',
+    ],
+  },
+  {
+    kind: 'prose',
+    theme: 'dark',
+    eyebrow: 'La visión',
+    heading: 'El nuevo rol que las empresas van a necesitar',
+    paragraphs: [
+      'Las empresas ya tienen especialistas en pauta. Especialistas en CRM. Especialistas en automatización. Especialistas en ventas.',
+      'Pero entre el clic y la venta hay una zona crítica: la conversación. Ahí es donde nace el rol del WhatsApp Marketer.',
+      'Una persona capaz de entender la estrategia, diseñar la experiencia, optimizar los mensajes, leer los datos y convertir WhatsApp en un canal de crecimiento.',
+      'No se trata solo de responder más rápido. Se trata de vender mejor.',
+    ],
+  },
+  {
+    kind: 'checklist',
+    theme: 'light',
+    eyebrow: 'El día a día',
+    heading: '¿Qué hace un Experto en WhatsApp Marketing?',
+    marker: 'check',
+    items: [
+      'Diseña journeys conversacionales.',
+      'Optimiza campañas Click to WhatsApp.',
+      'Crea mensajes que califican, educan y convierten.',
+      'Integra WhatsApp con CRM, automatización e IA.',
+      'Mide la conversión real de las conversaciones.',
+      'Recupera leads que dejaron de responder.',
+      'Ayuda a marketing y ventas a trabajar sobre el mismo canal, con más contexto y mejores resultados.',
+    ],
+  },
+  {
+    kind: 'checklist',
+    theme: 'dark',
+    eyebrow: 'El problema',
+    heading: 'De lead perdido a oportunidad convertida',
+    intro: [
+      'La mayoría de las empresas invierte en generar demanda, pero pierde oportunidades cuando el lead llega a WhatsApp.',
+    ],
+    marker: 'dot',
+    items: [
+      'Respuestas lentas.',
+      'Mensajes sin contexto.',
+      'Asesores saturados.',
+      'Falta de seguimiento.',
+      'Datos que no vuelven a las campañas.',
+      'Leads interesados que nunca llegan a ventas.',
+    ],
+    outro: [
+      'El WhatsApp Marketing existe para resolver ese problema.',
+      'No se trata de generar más conversaciones. Se trata de convertir mejor las conversaciones que ya estás generando.',
+    ],
+  },
+  {
+    kind: 'prose',
+    theme: 'light',
+    eyebrow: 'Lanzamiento',
+    heading: 'Lanzamiento en julio',
+    paragraphs: [
+      'La primera edición de la formación se lanza en julio. Durante esta etapa inicial, el acceso será exclusivo para las personas registradas en la lista de espera.',
+      'Quienes se registren primero recibirán prioridad para acceder a la formación, conocer el programa completo y asegurar su lugar antes de la apertura general.',
+    ],
+    cta: { label: 'Regístrate en la lista de espera', href: WAITLIST },
+  },
+  {
+    kind: 'prose',
+    theme: 'light',
+    eyebrow: 'Primera generación',
+    heading: 'Sé parte de la primera generación de Expertos en WhatsApp Marketing',
+    paragraphs: [
+      'WhatsApp ya es uno de los canales más importantes para conectar con clientes. La diferencia está en quién sabe usarlo estratégicamente.',
+      'Aprende a convertir conversaciones en oportunidades reales de negocio y desarrolla una habilidad clave para el futuro del marketing, las ventas y la experiencia del cliente.',
+    ],
+    cta: { label: 'Quiero entrar a la lista de espera', href: WAITLIST },
+  },
+  {
+    kind: 'faq',
+    theme: 'light',
+    eyebrow: 'Dudas',
+    heading: 'Preguntas frecuentes',
+    items: [
+      { q: '¿Cuándo se lanza la formación?', a: 'La formación se lanza en julio.' },
+      {
+        q: '¿Quiénes podrán acceder primero?',
+        a: 'En esta primera edición, el acceso será priorizado para las personas registradas en la lista de espera.',
+      },
+      {
+        q: '¿Necesito experiencia previa en WhatsApp Business?',
+        a: 'No necesariamente. La formación está pensada para profesionales de marketing, ventas, growth, CRM, performance y experiencia del cliente que quieran aprender a usar WhatsApp como canal estratégico de conversión.',
+      },
+      {
+        q: '¿La formación es solo para equipos técnicos?',
+        a: 'No. Está diseñada para perfiles de negocio que necesitan entender estrategia, automatización, IA, datos y conversión sin depender exclusivamente de conocimientos técnicos.',
+      },
+      {
+        q: '¿Qué voy a lograr al finalizar?',
+        a: 'Vas a entender cómo diseñar, implementar y optimizar estrategias de WhatsApp Marketing para captar, calificar, recuperar y convertir leads con mayor eficiencia.',
+      },
+    ],
+  },
+  {
+    kind: 'cta',
+    theme: 'dark',
+    heading: 'El futuro del marketing no termina en el clic. Empieza en la conversación.',
+    paragraphs: [
+      'Regístrate en la lista de espera y sé parte de la primera formación para convertirte en Experto en WhatsApp Marketing.',
+    ],
+    cta: { label: 'Unirme a la lista de espera', href: WAITLIST },
+  },
+];

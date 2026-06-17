@@ -10,20 +10,26 @@ console.log(`[academy-lp] v${_v} loaded`);
 
 import { type Theme, type Lang } from './core/types';
 import { initMotion } from './ui/motion';
+import { initAccordion } from './ui/accordion';
+import { initSmoothScroll, getLenis } from './ui/smooth-scroll';
+import { initSliders } from './ui/slider';
 import { renderHero } from './sections/hero';
+import { renderContentSections } from './sections/content-sections';
 import { renderWaitlist } from './sections/waitlist';
 
-// Scroll suave para anclas internas (#id) sin tocar CSS global de Elementor.
+// Scroll suave para anclas internas (#id). Usa Lenis si está activo; si no, nativo.
 function initAnchorScroll(root: HTMLElement): void {
   root.addEventListener('click', (e) => {
     const link = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
     if (!link) return;
     const id = link.getAttribute('href')?.slice(1);
     if (!id) return;
-    const target = root.querySelector(`#${CSS.escape(id)}`);
+    const target = root.querySelector<HTMLElement>(`#${CSS.escape(id)}`);
     if (!target) return;
     e.preventDefault();
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const lenis = getLenis();
+    if (lenis) lenis.scrollTo(target, { offset: 0 });
+    else target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 }
 
@@ -36,6 +42,8 @@ function resolveLang(raw: string | undefined): Lang {
 }
 
 function boot(): void {
+  initSmoothScroll(); // smooth scroll global (Lenis + ScrollTrigger), una sola vez
+
   const mounts = document.querySelectorAll<HTMLElement>('[data-aa-mount]');
   mounts.forEach((mount) => {
     const theme = resolveTheme(mount.dataset.aaTheme);
@@ -49,10 +57,13 @@ function boot(): void {
 
     // Cada sección se importa como módulo y recibe `root` como contenedor.
     renderHero(root);
+    renderContentSections(root);
     renderWaitlist(root);
 
     mount.replaceChildren(root);
     initAnchorScroll(root);
+    initAccordion(root);
+    initSliders(root);
     initMotion(root);
   });
 }
