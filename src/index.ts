@@ -11,7 +11,6 @@ console.log(`[academy-lp] v${_v} loaded`);
 import { type Theme, type Lang } from './core/types';
 import { initMotion } from './ui/motion';
 import { initAccordion } from './ui/accordion';
-import { initSmoothScroll, getLenis } from './ui/smooth-scroll';
 import { initSliders } from './ui/slider';
 import { initHeroChat } from './ui/hero-chat';
 import { initChats } from './ui/chat';
@@ -26,7 +25,7 @@ import { renderContentSections } from './sections/content-sections';
 import { renderWaitlist } from './sections/waitlist';
 import { renderFooter } from './sections/footer';
 
-// Scroll suave para anclas internas (#id). Usa Lenis si está activo; si no, nativo.
+// Scroll suave para anclas internas (#id) con scroll nativo.
 function initAnchorScroll(root: HTMLElement): void {
   root.addEventListener('click', (e) => {
     const link = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
@@ -36,9 +35,7 @@ function initAnchorScroll(root: HTMLElement): void {
     const target = root.querySelector<HTMLElement>(`#${CSS.escape(id)}`);
     if (!target) return;
     e.preventDefault();
-    const lenis = getLenis();
-    if (lenis) lenis.scrollTo(target, { offset: 0 });
-    else target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 }
 
@@ -51,7 +48,6 @@ function resolveLang(raw: string | undefined): Lang {
 }
 
 function boot(): void {
-  initSmoothScroll(); // smooth scroll global (Lenis + ScrollTrigger), una sola vez
 
   const mounts = document.querySelectorAll<HTMLElement>('[data-aa-mount]');
   mounts.forEach((mount) => {

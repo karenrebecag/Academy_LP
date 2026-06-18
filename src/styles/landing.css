@@ -25,7 +25,6 @@
 @import "./marquee.css";
 @import "./section-theme.css";
 @import "./cursor.css";
-@import "./lenis.css";
 
 /* Scrollbar electric. Selector gateado a :has(.aa-landing) para no afectar otras
    páginas de Elementor (solo aplica cuando la landing está montada). */
