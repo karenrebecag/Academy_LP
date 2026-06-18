@@ -5,21 +5,9 @@
 import { renderEyebrow, renderHeading } from '../ui/text';
 import type { ManifestoContent } from '../content';
 
-import shotTop from '../assets/mobile/bubbles-top.webp';
-import shotBottom from '../assets/mobile/bubbles-bottom.webp';
+import { manifestoShots, avatars as AVATARS } from '../assets/r2';
 
-import a01 from '../assets/avatars/avatar-01.jpg';
-import a02 from '../assets/avatars/avatar-02.jpg';
-import a03 from '../assets/avatars/avatar-03.jpg';
-import a04 from '../assets/avatars/avatar-04.jpg';
-import a05 from '../assets/avatars/avatar-05.jpg';
-import a06 from '../assets/avatars/avatar-06.jpg';
-import a07 from '../assets/avatars/avatar-07.jpg';
-import a08 from '../assets/avatars/avatar-08.jpg';
-import a09 from '../assets/avatars/avatar-09.jpg';
-import a10 from '../assets/avatars/avatar-10.jpg';
-
-const AVATARS = [a01, a02, a03, a04, a05, a06, a07, a08, a09, a10];
+const { top: shotTop, bottom: shotBottom } = manifestoShots;
 
 // Rotación leve + desplazamiento vertical (em) para que cada burbuja flote distinto.
 const TILT: { rot: number; dy: number }[] = [

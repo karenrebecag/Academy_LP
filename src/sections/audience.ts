@@ -4,11 +4,7 @@
 import { renderEyebrow, renderHeading, renderParagraph } from '../ui/text';
 import type { AudienceContent } from '../content';
 
-import aud1 from '../assets/audience/aud-1.jpg';
-import aud2 from '../assets/audience/aud-2.jpg';
-import aud3 from '../assets/audience/aud-3.jpg';
-
-const PHOTOS = [aud1, aud2, aud3];
+import { audiencePhotos as PHOTOS } from '../assets/r2';
 
 const CHECK_ICON =
   '<svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">' +

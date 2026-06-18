@@ -10,7 +10,7 @@ import { renderChatTrack } from '../ui/chat';
 import { renderAccordion } from '../ui/accordion';
 import { buildManifesto } from './manifesto';
 import { buildAudience } from './audience';
-import contourTexture from '../assets/textures/contour.jpg';
+import { contourTexture } from '../assets/r2';
 import {
   SECTIONS,
   type SectionContent,

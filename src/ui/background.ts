@@ -2,7 +2,7 @@
 // viewport (100vh). Las secciones light van transparentes y dejan ver este bg → se
 // pinta una sola vez en lugar de por strip. Las secciones dark lo cubren con su color.
 
-import contourTexture from '../assets/textures/contour.jpg';
+import { contourTexture } from '../assets/r2';
 
 export function renderBackground(root: Element): void {
   const bg = document.createElement('div');
