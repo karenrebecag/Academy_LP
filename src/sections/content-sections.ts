@@ -27,26 +27,6 @@ const CHECK_ICON =
   '<path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2" ' +
   'stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-// Flecha dibujada a mano del scribble de OSMO (info__scribble).
-const SCRIBBLE_ARROW =
-  '<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
-  '<path d="M30.3491 31.5811L30.558 30.3311L31.1618 29.9525C29.2036 30.1222 28.2898 27.0739 ' +
-  '26.4295 26.369C25.8681 26.1568 25.7735 26.8128 25.9497 27.0119C25.9921 27.0609 26.6775 ' +
-  '27.2502 27.0985 27.6516C27.4575 27.9975 29.1938 29.5543 28.8805 29.9492C23.8153 29.4434 ' +
-  '19.1711 28.2358 14.7619 25.6477C5.77699 20.3802 0.852119 10.8502 0.0231477 0.612125C-0.616531 ' +
-  '15.7327 12.0922 28.8428 26.9223 30.2821C26.5796 31.1372 23.8022 30.2234 23.9882 31.5811H30.3459H30.3491Z" ' +
-  'fill="currentColor"/></svg>';
-
-// Placeholder de la imagen de la columna izquierda (reemplaza c.image.src cuando exista).
-const INFO_IMAGE_PLACEHOLDER =
-  'data:image/svg+xml,' +
-  encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="720" viewBox="0 0 600 720">' +
-      '<rect width="600" height="720" fill="#e5e5e5"/>' +
-      '<text x="50%" y="50%" fill="#a3a3a3" font-family="sans-serif" font-size="28" ' +
-      'text-anchor="middle" dominant-baseline="middle">Imagen</text></svg>',
-  );
-
 function stack(center = false): HTMLElement {
   const el = document.createElement('div');
   el.className = center ? 'aa-stack aa-stack--center' : 'aa-stack';
@@ -191,36 +171,13 @@ function buildInfo(c: InfoContent): HTMLElement {
   const wrap = document.createElement('div');
   wrap.className = 'aa-info__wrap';
 
-  const small = document.createElement('div');
-  small.className = 'aa-info__small-col';
-  small.setAttribute('data-aa-fade', '');
-  const img = document.createElement('img');
-  img.className = 'aa-info__image';
-  img.src = c.image?.src ?? INFO_IMAGE_PLACEHOLDER;
-  img.alt = c.image?.alt ?? '';
-  img.loading = 'lazy';
-  small.appendChild(img);
-
   const large = document.createElement('div');
   large.className = 'aa-info__large-col';
-
-  if (c.scribble) {
-    const scribble = document.createElement('div');
-    scribble.className = 'aa-info__scribble';
-    const text = document.createElement('span');
-    text.className = 'aa-info__scribble-text';
-    text.textContent = c.scribble;
-    const arrow = document.createElement('span');
-    arrow.className = 'aa-info__arrow';
-    arrow.innerHTML = SCRIBBLE_ARROW;
-    scribble.append(text, arrow);
-    large.appendChild(scribble);
-  }
 
   large.appendChild(
     c.rotate
       ? renderRotatingHeading({
-          size: 'ml',
+          size: 'l',
           tag: 'h3',
           before: c.rotate.before,
           words: c.rotate.words,
@@ -228,7 +185,7 @@ function buildInfo(c: InfoContent): HTMLElement {
           block: c.rotate.block,
           className: 'aa-info__title',
         })
-      : renderHeading({ size: 'ml', text: c.heading, tag: 'h3', split: true, className: 'aa-info__title' }),
+      : renderHeading({ size: 'l', text: c.heading, tag: 'h3', split: true, className: 'aa-info__title' }),
   );
 
   const ul = document.createElement('ul');
@@ -246,7 +203,7 @@ function buildInfo(c: InfoContent): HTMLElement {
   });
   large.appendChild(ul);
 
-  wrap.append(small, large);
+  wrap.appendChild(large);
   return wrap;
 }
 

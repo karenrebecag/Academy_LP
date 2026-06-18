@@ -306,7 +306,7 @@ export const SECTIONS: SectionContent[] = [
     theme: 'dark',
     eyebrow: 'El problema',
     heading: 'De lead perdido a oportunidad convertida',
-    surface: { color: '#6840ff', text: 'light' },
+    surface: { color: '#0a290f', text: 'light' },
     media: {
       side: 'left',
       src: 'https://pub-09dc8675a13e4b6d9ff1f7e15d49ade2.r2.dev/5a069a75-ec80-4f6a-8d01-6ceb09f53151-2026-06-18_6daced8ee45a9b8d02e25d24e7d1b682d9c1bbeea923e2be04b8b07fba430e43.webp',

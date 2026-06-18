@@ -108,56 +108,51 @@ function initBlock(heading: Element, span: HTMLElement, words: string[], stepDur
 
 // ── Modo inline: palabras sueltas, máscara de línea vía SplitText, ancho animado ──
 function initInline(heading: Element, span: HTMLElement, words: string[], stepDuration: number): void {
-  new SplitText(heading, {
-    type: 'lines',
-    mask: 'lines',
-    autoSplit: true,
-    linesClass: 'aa-rotating-line',
-    onSplit: () => {
-      loops.get(heading)?.kill();
+  // Split de líneas (máscara) una sola vez. SIN autoSplit/onSplit: con varias instancias
+  // en la página, el revert asíncrono de autoSplit dejaba el rotatorio congelado en la
+  // palabra más larga. El span se conserva tras el split; construimos el stack dentro.
+  new SplitText(heading, { type: 'lines', mask: 'lines', linesClass: 'aa-rotating-line' });
 
-      const wrapper = document.createElement('span');
-      wrapper.className = 'aa-rotating__inner';
-      const wordEls = words.map((word) => {
-        const el = document.createElement('span');
-        el.className = 'aa-rotating__word';
-        el.textContent = word;
-        wrapper.appendChild(el);
-        return el;
+  const wrapper = document.createElement('span');
+  wrapper.className = 'aa-rotating__inner';
+  const wordEls = words.map((word) => {
+    const el = document.createElement('span');
+    el.className = 'aa-rotating__word';
+    el.textContent = word;
+    wrapper.appendChild(el);
+    return el;
+  });
+  span.textContent = '';
+  span.appendChild(wrapper);
+
+  requestAnimationFrame(() => {
+    gsap.set(wordEls, { yPercent: 150, autoAlpha: 0 });
+    let activeIndex = 0;
+    gsap.set(wordEls[activeIndex], { yPercent: 0, autoAlpha: 1 });
+    wrapper.style.width = `${wordEls[activeIndex].getBoundingClientRect().width}px`;
+
+    const showNext = (): void => {
+      const nextIndex = (activeIndex + 1) % wordEls.length;
+      const prevEl = wordEls[activeIndex];
+      const current = wordEls[nextIndex];
+      gsap.to(wrapper, {
+        width: current.getBoundingClientRect().width,
+        duration: IN_DURATION,
+        ease: 'power4.inOut',
       });
-      span.textContent = '';
-      span.appendChild(wrapper);
+      if (prevEl !== current) {
+        gsap.to(prevEl, { yPercent: -150, autoAlpha: 0, duration: OUT_DURATION, ease: 'power4.inOut' });
+      }
+      gsap.fromTo(
+        current,
+        { yPercent: 150, autoAlpha: 0 },
+        { yPercent: 0, autoAlpha: 1, duration: IN_DURATION, ease: 'power4.inOut' },
+      );
+      activeIndex = nextIndex;
+      loops.set(heading, gsap.delayedCall(stepDuration, showNext));
+    };
 
-      requestAnimationFrame(() => {
-        gsap.set(wordEls, { yPercent: 150, autoAlpha: 0 });
-        let activeIndex = 0;
-        gsap.set(wordEls[activeIndex], { yPercent: 0, autoAlpha: 1 });
-        wrapper.style.width = `${wordEls[activeIndex].getBoundingClientRect().width}px`;
-
-        const showNext = (): void => {
-          const nextIndex = (activeIndex + 1) % wordEls.length;
-          const prevEl = wordEls[activeIndex];
-          const current = wordEls[nextIndex];
-          gsap.to(wrapper, {
-            width: current.getBoundingClientRect().width,
-            duration: IN_DURATION,
-            ease: 'power4.inOut',
-          });
-          if (prevEl !== current) {
-            gsap.to(prevEl, { yPercent: -150, autoAlpha: 0, duration: OUT_DURATION, ease: 'power4.inOut' });
-          }
-          gsap.fromTo(
-            current,
-            { yPercent: 150, autoAlpha: 0 },
-            { yPercent: 0, autoAlpha: 1, duration: IN_DURATION, ease: 'power4.inOut' },
-          );
-          activeIndex = nextIndex;
-          loops.set(heading, gsap.delayedCall(stepDuration, showNext));
-        };
-
-        if (wordEls.length > 1) loops.set(heading, gsap.delayedCall(stepDuration, showNext));
-      });
-    },
+    if (wordEls.length > 1) loops.set(heading, gsap.delayedCall(stepDuration, showNext));
   });
 }
 
