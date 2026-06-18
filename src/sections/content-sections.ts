@@ -5,6 +5,7 @@
 import { renderSection, renderContainer, renderGrid, type ContainerSize } from '../ui/layout';
 import { renderEyebrow, renderHeading, renderParagraph } from '../ui/text';
 import { renderButton } from '../ui/atoms/button';
+import { renderRotatingHeading } from '../ui/rotating-text';
 import { renderAccordion } from '../ui/accordion';
 import { buildManifesto } from './manifesto';
 import { buildAudience } from './audience';
@@ -35,15 +36,15 @@ const SCRIBBLE_ARROW =
   '15.7327 12.0922 28.8428 26.9223 30.2821C26.5796 31.1372 23.8022 30.2234 23.9882 31.5811H30.3459H30.3491Z" ' +
   'fill="currentColor"/></svg>';
 
-// Gráfico de marca para la columna pequeña: burbuja de chat con línea de crecimiento.
-const INFO_GRAPHIC =
-  '<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
-  '<path d="M20 18 H100 a14 14 0 0 1 14 14 V74 a14 14 0 0 1 -14 14 H52 L30 104 V88 H20 ' +
-  'a14 14 0 0 1 -14 -14 V32 a14 14 0 0 1 14 -14 Z" stroke="currentColor" stroke-width="4"/>' +
-  '<path d="M28 64 L48 46 L66 60 L92 34" stroke="currentColor" stroke-width="4" ' +
-  'stroke-linecap="round" stroke-linejoin="round"/>' +
-  '<path d="M78 34 H92 V48" stroke="currentColor" stroke-width="4" ' +
-  'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+// Placeholder de la imagen de la columna izquierda (reemplaza c.image.src cuando exista).
+const INFO_IMAGE_PLACEHOLDER =
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="720" viewBox="0 0 600 720">' +
+      '<rect width="600" height="720" fill="#e5e5e5"/>' +
+      '<text x="50%" y="50%" fill="#a3a3a3" font-family="sans-serif" font-size="28" ' +
+      'text-anchor="middle" dominant-baseline="middle">Imagen</text></svg>',
+  );
 
 function stack(center = false): HTMLElement {
   const el = document.createElement('div');
@@ -75,14 +76,26 @@ function buildProse(c: ProseContent): HTMLElement {
   const center = c.kind === 'statement';
   const s = stack(center);
   if (c.eyebrow) s.appendChild(fadeEyebrow(c.eyebrow));
-  s.appendChild(
-    renderHeading({
-      size: center ? 'xl' : 'l',
-      text: c.heading,
-      split: true,
-      className: center ? 'aa-text-balance' : undefined,
-    }),
-  );
+  if (c.rotate) {
+    s.appendChild(
+      renderRotatingHeading({
+        size: center ? 'xl' : 'l',
+        before: c.rotate.before,
+        words: c.rotate.words,
+        after: c.rotate.after,
+        block: c.rotate.block,
+      }),
+    );
+  } else {
+    s.appendChild(
+      renderHeading({
+        size: center ? 'xl' : 'l',
+        text: c.heading,
+        split: true,
+        className: center ? 'aa-text-balance' : undefined,
+      }),
+    );
+  }
   c.paragraphs.forEach((p) => s.appendChild(fadeParagraph(p)));
   if (c.cta) s.appendChild(ctaRow(c.cta));
   return s;
@@ -127,10 +140,12 @@ function buildInfo(c: InfoContent): HTMLElement {
   const small = document.createElement('div');
   small.className = 'aa-info__small-col';
   small.setAttribute('data-aa-fade', '');
-  const graphic = document.createElement('div');
-  graphic.className = 'aa-info__graphic';
-  graphic.innerHTML = INFO_GRAPHIC;
-  small.appendChild(graphic);
+  const img = document.createElement('img');
+  img.className = 'aa-info__image';
+  img.src = c.image?.src ?? INFO_IMAGE_PLACEHOLDER;
+  img.alt = c.image?.alt ?? '';
+  img.loading = 'lazy';
+  small.appendChild(img);
 
   const large = document.createElement('div');
   large.className = 'aa-info__large-col';
@@ -149,7 +164,17 @@ function buildInfo(c: InfoContent): HTMLElement {
   }
 
   large.appendChild(
-    renderHeading({ size: 'ml', text: c.heading, tag: 'h3', split: true, className: 'aa-info__title' }),
+    c.rotate
+      ? renderRotatingHeading({
+          size: 'ml',
+          tag: 'h3',
+          before: c.rotate.before,
+          words: c.rotate.words,
+          after: c.rotate.after,
+          block: c.rotate.block,
+          className: 'aa-info__title',
+        })
+      : renderHeading({ size: 'ml', text: c.heading, tag: 'h3', split: true, className: 'aa-info__title' }),
   );
 
   const ul = document.createElement('ul');

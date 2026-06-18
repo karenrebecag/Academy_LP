@@ -10,6 +10,9 @@ export interface ProseContent {
   theme: SectionTheme;
   eyebrow?: string;
   heading: string;
+  // Palabra rotatoria opcional en el heading: before + (words ciclando) + after.
+  // `heading` se mantiene como fallback/SEO; si hay `rotate`, manda el rotatorio.
+  rotate?: { before: string; words: string[]; after?: string; block?: boolean };
   paragraphs: string[];
   cta?: { label: string; href: string };
 }
@@ -69,7 +72,9 @@ export interface InfoContent {
   theme: SectionTheme;
   scribble?: string; // eyebrow flotante (coral) tipo "scribble" de OSMO
   heading: string; // statement largo que responde la pregunta
+  rotate?: { before: string; words: string[]; after?: string; block?: boolean }; // palabra/frase rotatoria
   items: { title: string; desc: string }[]; // filas label (izq) + párrafo (der)
+  image?: { src: string; alt: string }; // imagen de la columna izquierda
 }
 
 export interface FaqContent {
@@ -141,6 +146,11 @@ export const SECTIONS: SectionContent[] = [
     theme: 'dark',
     eyebrow: 'La tesis',
     heading: 'WhatsApp Marketing no es enviar mensajes. Es diseñar conversaciones que venden.',
+    rotate: {
+      before: 'WhatsApp Marketing no es enviar mensajes. Es diseñar conversaciones que',
+      words: ['venden', 'convierten', 'cierran', 'fidelizan', 'escalan'],
+      after: '.',
+    },
     paragraphs: [
       'En esta formación vas a aprender cómo pensar WhatsApp como un canal estratégico dentro del funnel comercial. Desde el primer clic en una campaña hasta la calificación del lead, el seguimiento, la recuperación de oportunidades inactivas y la medición real de resultados.',
       'Porque cada conversación puede ser una venta. Pero solo si está diseñada para avanzar.',
@@ -225,6 +235,15 @@ export const SECTIONS: SectionContent[] = [
     scribble: '¿Qué hace?',
     heading:
       'Un Experto en WhatsApp Marketing convierte conversaciones en crecimiento: diseña la experiencia, optimiza los mensajes y conecta cada chat con la estrategia comercial.',
+    rotate: {
+      before: 'Un Experto en WhatsApp Marketing convierte conversaciones en crecimiento:',
+      words: [
+        'diseña la experiencia',
+        'optimiza los mensajes',
+        'conecta cada chat con la estrategia comercial',
+      ],
+      block: true, // frases largas → modo bloque (propia línea, multilínea)
+    },
     items: [
       {
         title: 'Diseña la conversación',
@@ -268,24 +287,13 @@ export const SECTIONS: SectionContent[] = [
   },
   {
     kind: 'prose',
+    id: 'aa-generacion',
     theme: 'light',
-    eyebrow: 'Lanzamiento',
-    heading: 'Lanzamiento en julio',
+    eyebrow: 'Primera generación · Lanzamiento en julio',
+    heading: 'Sé parte de la primera generación de Expertos en WhatsApp Marketing',
     paragraphs: [
       'La primera edición de la formación se lanza en julio. Durante esta etapa inicial, el acceso será exclusivo para las personas registradas en la lista de espera.',
       'Quienes se registren primero recibirán prioridad para acceder a la formación, conocer el programa completo y asegurar su lugar antes de la apertura general.',
-    ],
-    cta: { label: 'Regístrate en la lista de espera', href: WAITLIST },
-  },
-  {
-    kind: 'prose',
-    id: 'aa-generacion',
-    theme: 'light',
-    eyebrow: 'Primera generación',
-    heading: 'Sé parte de la primera generación de Expertos en WhatsApp Marketing',
-    paragraphs: [
-      'WhatsApp ya es uno de los canales más importantes para conectar con clientes. La diferencia está en quién sabe usarlo estratégicamente.',
-      'Aprende a convertir conversaciones en oportunidades reales de negocio y desarrolla una habilidad clave para el futuro del marketing, las ventas y la experiencia del cliente.',
     ],
     cta: { label: 'Quiero entrar a la lista de espera', href: WAITLIST },
   },

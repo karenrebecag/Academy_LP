@@ -52,6 +52,8 @@
 /* Card flotante dark (CTA "Primera generación"): el strip light deja ver la textura y
    el container flota como card oscuro (obsidian) con texto claro. Como el form, pero dark. */
 .aa-landing #aa-generacion .aa-container {
+  --aa-bg:        #201d1d; /* superficie del card: la leen badges/botones (color: var(--aa-bg)) */
+  --aa-bg-subtle: #1a1717;
   --aa-fg:        var(--aa-neutral-50);
   --aa-fg-muted:  var(--aa-neutral-400);
   --aa-fg-subtle: var(--aa-neutral-600);

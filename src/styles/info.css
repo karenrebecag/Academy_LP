@@ -14,11 +14,13 @@
   max-width: 22em;
 }
 
-.aa-landing .aa-info__graphic {
-  width: 8em;
-  color: var(--aa-accent);
+.aa-landing .aa-info__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 5 / 6;
+  object-fit: cover;
+  border-radius: var(--aa-radius-l);
 }
-.aa-landing .aa-info__graphic svg { width: 100%; height: auto; display: block; }
 
 .aa-landing .aa-info__large-col {
   position: relative;
@@ -82,7 +84,6 @@
 @media screen and (max-width: 767px) {
   .aa-landing .aa-info__wrap { flex-direction: column; gap: var(--aa-gap-l); }
   .aa-landing .aa-info__small-col { max-width: none; }
-  .aa-landing .aa-info__graphic { margin-inline: auto; }
   .aa-landing .aa-info__large-col { max-width: none; }
   .aa-landing .aa-info__scribble {
     position: static;

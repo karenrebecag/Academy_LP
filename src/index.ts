@@ -16,6 +16,7 @@ import { initSliders } from './ui/slider';
 import { initHeroChat } from './ui/hero-chat';
 import { initMomentumHover } from './ui/momentum-hover';
 import { initCursor } from './ui/cursor';
+import { initRotatingText } from './ui/rotating-text';
 import { renderBackground } from './ui/background';
 import { renderHero } from './sections/hero';
 import { renderContentSections } from './sections/content-sections';
@@ -72,6 +73,7 @@ function boot(): void {
     initHeroChat(root);
     initMomentumHover(root);
     initCursor(root);
+    initRotatingText(root);
     initMotion(root);
   });
 }

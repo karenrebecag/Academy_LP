@@ -26,6 +26,7 @@ export function renderWaitlist(root: Element): void {
   // ── Intro ───────────────────────────────────────────────────────────────────
   const intro = document.createElement('div');
   intro.className = 'aa-flex-col aa-text-center';
+  intro.style.alignItems = 'center'; // centra el badge (fit-content) como en manifesto/audience
   intro.style.gap = 'var(--aa-gap-m)';
   intro.style.maxWidth = '44em';
   intro.style.marginInline = 'auto';
