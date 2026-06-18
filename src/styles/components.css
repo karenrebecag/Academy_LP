@@ -33,6 +33,15 @@
 }
 .aa-landing .aa-button--sm { --aa-btn-padding: 0.72em 1.15em; font-size: 0.875em; }
 
+/* Elementor (.elementor-kit-NN a:hover/visited) fuerza su color en anchors (0,2,1);
+   los CTA son <a>, así que reanclamos el color del botón en todos los estados (0,3,0). */
+.aa-landing .aa-button:hover,
+.aa-landing .aa-button:focus,
+.aa-landing .aa-button:active,
+.aa-landing .aa-button:visited {
+  color: var(--aa-btn-color);
+}
+
 /* Variantes por color (mapeadas a tokens del DS) */
 .aa-landing .aa-button--secondary { --aa-btn-color: var(--aa-bg); --aa-btn-bg: var(--aa-fg); }
 .aa-landing .aa-button--ghost { --aa-btn-color: var(--aa-fg); --aa-btn-bg: transparent; }
