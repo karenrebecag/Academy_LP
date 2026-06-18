@@ -6,6 +6,7 @@ import { renderSection, renderContainer, renderGrid, type ContainerSize } from '
 import { renderEyebrow, renderHeading, renderParagraph } from '../ui/text';
 import { renderButton } from '../ui/atoms/button';
 import { renderAccordion } from '../ui/accordion';
+import { buildManifesto } from './manifesto';
 import {
   SECTIONS,
   type SectionContent,
@@ -275,6 +276,8 @@ function buildInner(c: SectionContent): HTMLElement {
       return buildCards(c);
     case 'checklist':
       return buildChecklist(c);
+    case 'manifesto':
+      return buildManifesto(c);
     case 'info':
       return buildInfo(c);
     case 'faq':
@@ -285,7 +288,7 @@ function buildInner(c: SectionContent): HTMLElement {
 }
 
 function sizeFor(kind: SectionContent['kind']): ContainerSize {
-  if (kind === 'cards' || kind === 'info') return 'default';
+  if (kind === 'cards' || kind === 'info' || kind === 'manifesto') return 'default';
   if (kind === 'statement') return 'm';
   return 'sm';
 }

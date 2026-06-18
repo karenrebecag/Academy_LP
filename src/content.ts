@@ -42,6 +42,17 @@ export interface ChecklistContent {
   cta?: { label: string; href: string };
 }
 
+export interface ManifestoContent {
+  kind: 'manifesto';
+  id?: string;
+  theme: SectionTheme;
+  eyebrow?: string;
+  heading: string;
+  paragraphs: string[];
+  // Burbujas flotantes: preguntas de prospectos. El avatar y la posición los asigna el renderer.
+  bubbles: { text: string; time: string; kind: 'in' | 'out' }[];
+}
+
 export interface InfoContent {
   kind: 'info';
   id?: string;
@@ -73,6 +84,7 @@ export type SectionContent =
   | ProseContent
   | CardsContent
   | ChecklistContent
+  | ManifestoContent
   | InfoContent
   | FaqContent
   | CtaContent;
@@ -82,15 +94,28 @@ const WAITLIST = '#aa-waitlist';
 // Secciones entre el hero (#1) y el form (#13). Orden del brief.
 export const SECTIONS: SectionContent[] = [
   {
-    kind: 'prose',
+    kind: 'manifesto',
     theme: 'light',
     eyebrow: 'El cambio',
     heading: '¿Por qué convertirte en WhatsApp Marketer?',
+    // **…** marca palabras a resaltar (peso tipográfico) para reforzar la narrativa.
     paragraphs: [
-      'Porque el marketing cambió. Antes, el desafío era generar tráfico. Después, fue generar leads. Hoy, el verdadero desafío es convertir conversaciones.',
-      'Los usuarios ya no quieren llenar formularios y esperar. Quieren escribir, recibir respuesta inmediata, resolver dudas y avanzar por WhatsApp.',
-      'Pero para que eso funcione, no alcanza con “tener WhatsApp”. Se necesita estrategia.',
-      'Un WhatsApp Marketer entiende cómo convertir ese canal en una máquina de crecimiento: conecta anuncios, mensajes, automatización, IA, CRM, datos y ventas en una experiencia que realmente convierte.',
+      'Porque el marketing cambió. Antes, el desafío era generar tráfico. Después, fue generar leads. Hoy, el verdadero desafío es **convertir conversaciones**.',
+      'Los usuarios ya no quieren llenar formularios y esperar. Quieren **escribir, recibir respuesta inmediata** y avanzar por WhatsApp.',
+      'Pero para que eso funcione, no alcanza con “tener WhatsApp”. **Se necesita estrategia.**',
+      'Un **WhatsApp Marketer** entiende cómo convertir ese canal en una **máquina de crecimiento**: conecta anuncios, mensajes, automatización, IA, CRM, datos y ventas en una experiencia que **realmente convierte**.',
+    ],
+    bubbles: [
+      { kind: 'in', text: '¿Esto sirve si vendo por DM?', time: '11:58' },
+      { kind: 'out', text: '¿Cuánto cuesta?', time: '11:59' },
+      { kind: 'in', text: '¿Necesito saber de tecnología?', time: '11:59' },
+      { kind: 'in', text: '¿En cuánto tiempo veo resultados?', time: '12:00' },
+      { kind: 'out', text: '¿Funciona para mi tienda?', time: '12:00' },
+      { kind: 'in', text: '¿Y si no sé de marketing?', time: '12:01' },
+      { kind: 'in', text: '¿Da certificado?', time: '12:01' },
+      { kind: 'out', text: '¿Sirve para agencias?', time: '12:02' },
+      { kind: 'in', text: '¿Incluye plantillas?', time: '12:02' },
+      { kind: 'in', text: '¿Hay cupo todavía?', time: '12:03' },
     ],
   },
   {

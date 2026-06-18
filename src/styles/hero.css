@@ -1,9 +1,14 @@
 /* atom-academy · hero. Card inset con video de fondo en loop + contenido a la izquierda. */
 
-/* Inset: padding del section que separa el card del borde del viewport */
+/* Inset: padding del section que separa el card del borde del viewport.
+   El hero ocupa 100svh; el card crece para llenar (menos inset y footnote). */
 .aa-landing .aa-hero {
   position: relative;
   z-index: 2;
+  box-sizing: border-box;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
   padding: clamp(0.75rem, 2vw, 2rem);
   padding-top: clamp(1.5rem, 3vw, 3rem); /* aire superior */
 }
@@ -15,7 +20,8 @@
   isolation: isolate;
   overflow: hidden;
   border-radius: var(--aa-hero-radius);
-  min-height: min(86svh, 760px);
+  flex: 1;
+  min-height: 0;
   display: flex;
   align-items: center;
   background: var(--aa-neutral-900); /* fallback antes de cargar el video */

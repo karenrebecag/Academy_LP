@@ -19,6 +19,8 @@ const jsOptions = {
   outfile: 'dist/landing.js',
   minify: true,
   sourcemap: true,
+  // Avatares y capturas inline como data-URL en el bundle (sin hosting externo).
+  loader: { '.jpg': 'dataurl', '.webp': 'dataurl' },
 };
 
 const cssOptions = {

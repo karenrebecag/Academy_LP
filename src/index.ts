@@ -14,6 +14,7 @@ import { initAccordion } from './ui/accordion';
 import { initSmoothScroll, getLenis } from './ui/smooth-scroll';
 import { initSliders } from './ui/slider';
 import { initHeroChat } from './ui/hero-chat';
+import { initMomentumHover } from './ui/momentum-hover';
 import { renderHero } from './sections/hero';
 import { renderContentSections } from './sections/content-sections';
 import { renderWaitlist } from './sections/waitlist';
@@ -66,6 +67,7 @@ function boot(): void {
     initAccordion(root);
     initSliders(root);
     initHeroChat(root);
+    initMomentumHover(root);
     initMotion(root);
   });
 }
