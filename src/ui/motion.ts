@@ -118,6 +118,12 @@ export function initMotion(root: Element): void {
   initButton004(root);
   playIntro(root);
   initScrollReveals(root);
-  // Recalcula posiciones de los triggers (importante con Lenis activo).
+
+  // En mobile el refresh síncrono corre antes de que carguen imágenes (R2) y fuentes,
+  // con alturas colapsadas → los triggers above-the-fold quedan mal posicionados y el
+  // contenido no se revela hasta hacer scroll. Recalculamos al asentarse el layout.
+  ScrollTrigger.config({ ignoreMobileResize: true });
   ScrollTrigger.refresh();
+  window.addEventListener('load', () => ScrollTrigger.refresh());
+  document.fonts?.ready.then(() => ScrollTrigger.refresh());
 }
