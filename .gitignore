@@ -2,6 +2,9 @@ node_modules/
 .env
 *.local
 
+# Apps Script con el token (secreto): nunca debe llegar al repo público
+apps-script.gs
+
 # Video local de preview (producción: Cloudflare)
 media/
 

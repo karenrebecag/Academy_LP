@@ -11,6 +11,25 @@
 .aa-landing .aa-container.is--sm { max-width: calc(var(--aa-container-max) * 0.65); }
 .aa-landing .aa-container.is--s  { max-width: calc(var(--aa-container-max) * 0.5); }
 
+/* ─── Card container — superficie flotante (footer, form, info, generación) ─────
+   Comparten ancho (el default del contenedor) y forma. En <768px se vuelven strips:
+   full-bleed (todo el ancho), sin radio. El color de fondo lo define cada sección
+   (blanco por defecto; generación lo sobreescribe a obsidian por especificidad de id). */
+.aa-landing .aa-container--card {
+  background: #ffffff;
+  border-radius: clamp(20px, 3vw, 32px);
+  padding: clamp(2rem, 5vw, 4.5rem);
+  box-shadow: 0 30px 80px rgba(10, 10, 10, 0.008);
+}
+@media (max-width: 767px) {
+  .aa-landing .aa-container--card {
+    max-width: none;
+    border-radius: 0;
+    margin-block: 0;
+    padding-inline: var(--aa-container-pad);
+  }
+}
+
 /* ─── Section — espaciado vertical por padding tokens ─────────────────────────── */
 .aa-landing .aa-section {
   padding-block: var(--aa-padding-xl);
@@ -22,6 +41,15 @@
   align-items: center;
 }
 .aa-landing .aa-section--sm { padding-block: var(--aa-padding-l); }
+
+/* Trío "Para quién" → form → "Primera generación": en desktop el padding-block xl
+   deja 12rem entre cada par. Se comprimen solo los bordes internos para que las tres
+   se lean como un grupo (los externos —hacia Programa y hacia el CTA— se conservan). */
+@media (min-width: 768px) {
+  .aa-landing #aa-audience   { padding-bottom: var(--aa-padding-m); }
+  .aa-landing #aa-waitlist   { padding-block: var(--aa-padding-m); }
+  .aa-landing #aa-generacion { padding-top: var(--aa-padding-m); }
+}
 
 /* ─── Grid ────────────────────────────────────────────────────────────────────── */
 .aa-landing .aa-grid {

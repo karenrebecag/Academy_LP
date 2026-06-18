@@ -19,9 +19,12 @@ import { initMomentumHover } from './ui/momentum-hover';
 import { initCursor } from './ui/cursor';
 import { initRotatingText } from './ui/rotating-text';
 import { renderBackground } from './ui/background';
+import { renderMarquee, initMarquee } from './ui/marquee';
+import { initMetaTheme } from './ui/meta-theme';
 import { renderHero } from './sections/hero';
 import { renderContentSections } from './sections/content-sections';
 import { renderWaitlist } from './sections/waitlist';
+import { renderFooter } from './sections/footer';
 
 // Scroll suave para anclas internas (#id). Usa Lenis si está activo; si no, nativo.
 function initAnchorScroll(root: HTMLElement): void {
@@ -63,9 +66,15 @@ function boot(): void {
 
     // Cada sección se importa como módulo y recibe `root` como contenedor.
     renderBackground(root); // bg fijo texturizado detrás de todo
+    renderMarquee(root); // barra fija superior (botón de registro permanente)
     renderHero(root);
-    renderWaitlist(root); // form justo debajo del hero
     renderContentSections(root);
+    renderWaitlist(root);
+    renderFooter(root);
+    // El form vive entre "Para quién" (audience) y "Primera generación" (#aa-generacion).
+    const waitlist = root.querySelector('#aa-waitlist');
+    const generacion = root.querySelector('#aa-generacion');
+    if (waitlist && generacion) root.insertBefore(waitlist, generacion);
 
     mount.replaceChildren(root);
     initAnchorScroll(root);
@@ -76,6 +85,8 @@ function boot(): void {
     initMomentumHover(root);
     initCursor(root);
     initRotatingText(root);
+    initMarquee(root);
+    initMetaTheme(root);
     initMotion(root);
   });
 }

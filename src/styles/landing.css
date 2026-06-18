@@ -21,9 +21,24 @@
 @import "./info.css";
 @import "./slider.css";
 @import "./form.css";
+@import "./footer.css";
+@import "./marquee.css";
 @import "./section-theme.css";
 @import "./cursor.css";
 @import "./lenis.css";
+
+/* Scrollbar electric. Selector gateado a :has(.aa-landing) para no afectar otras
+   páginas de Elementor (solo aplica cuando la landing está montada). */
+:root:has(.aa-landing) {
+  scrollbar-width: thin;
+  scrollbar-color: var(--aa-color-electric) transparent;
+}
+:root:has(.aa-landing)::-webkit-scrollbar { width: 10px; height: 10px; }
+:root:has(.aa-landing)::-webkit-scrollbar-track { background: transparent; }
+:root:has(.aa-landing)::-webkit-scrollbar-thumb {
+  background: var(--aa-color-electric);
+  border-radius: var(--aa-radius-pill);
+}
 
 /* Reset box-sizing: sin esto, width:100% + padding desbordan los contenedores y el
    overflow-x: clip del root recorta el contenido por la derecha en todas las strips. */
@@ -43,6 +58,7 @@
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip; /* contiene cualquier desborde horizontal (slider, scribble) sin romper sticky */
   isolation: isolate; /* contexto de apilado: contiene el bg fijo (z-index -1) */
+  padding-top: var(--aa-marquee-height); /* deja sitio a la barra fija superior */
 }
 
 /* Fondo fijo global: color claro + textura topográfica con blend, pineado al viewport.

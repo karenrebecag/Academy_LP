@@ -69,7 +69,7 @@
   padding-bottom: var(--aa-gap-m);
   max-width: 60ch;
   color: var(--aa-fg-muted);
-  font-size: var(--aa-text-xs);
+  font-size: var(--aa-text-s);
   line-height: 1.5;
 }
 

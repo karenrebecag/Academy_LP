@@ -1,7 +1,7 @@
 // Waitlist — sección final con el formulario de lista de espera.
 // Inputs/checkbox/submit con el design language del newsletter de OSMO.
 // Ancla destino de todos los CTAs (#aa-waitlist). Campos: Nombre, Email, Empresa,
-// Cargo, Teléfono. Validación cliente; conexión a Google Sheets pendiente (TODO).
+// Cargo, Teléfono. Validación cliente + envío al proxy en Vercel (Edge → Google Sheets).
 
 import { renderSection, renderContainer } from '../ui/layout';
 import { renderEyebrow, renderHeading, renderParagraph } from '../ui/text';
@@ -11,6 +11,11 @@ import { renderButton } from '../ui/atoms/button';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+()\d\s-]{6,}$/;
+
+// Endpoint público del proxy en Vercel (Edge Function → Google Sheets). NO es secreto:
+// el secreto (URL/token del Apps Script) vive en env vars de Vercel. Reemplaza el
+// subdominio por el real tras el primer deploy a Vercel.
+const WAITLIST_ENDPOINT = 'https://atom-academy-waitlist-api.vercel.app/api/waitlist';
 
 function setError(field: HTMLElement, error: HTMLElement | null, message: string): void {
   field.classList.add('has-error');
@@ -56,6 +61,15 @@ export function renderWaitlist(root: Element): void {
   const roleParts = renderField({ name: 'role', label: 'Cargo', placeholder: 'Tu cargo o rol', required: true, autocomplete: 'organization-title' });
   const phoneParts = renderField({ name: 'phone', label: 'Teléfono', type: 'tel', placeholder: '+52 55 1234 5678', required: true, autocomplete: 'tel' });
 
+  // Honeypot anti-bot: invisible y fuera del tab order. Debe llegar vacío al servidor.
+  const honeypot = document.createElement('input');
+  honeypot.type = 'text';
+  honeypot.name = 'company_url';
+  honeypot.tabIndex = -1;
+  honeypot.autocomplete = 'off';
+  honeypot.setAttribute('aria-hidden', 'true');
+  honeypot.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;opacity:0;';
+
   const row1 = document.createElement('div');
   row1.className = 'aa-form__row';
   row1.append(nameParts.field, emailParts.field);
@@ -67,7 +81,7 @@ export function renderWaitlist(root: Element): void {
   const check = renderCheckbox({
     name: 'privacy',
     required: true,
-    labelHtml: 'Acepto recibir información sobre la formación y la <a href="#" rel="noopener">política de privacidad</a>.',
+    labelHtml: 'Acepto recibir información sobre la formación y la <a href="https://atomchat.io/politica-de-privacidad/" target="_blank" rel="noopener noreferrer">política de privacidad</a>.',
   });
 
   const submitWrap = document.createElement('div');
@@ -82,7 +96,7 @@ export function renderWaitlist(root: Element): void {
   note.setAttribute('aria-live', 'polite');
 
   // Teléfono a ancho completo (fila propia)
-  form.append(row1, row2, phoneParts.field, check.field, submitWrap, note);
+  form.append(row1, row2, phoneParts.field, honeypot, check.field, submitWrap, note);
 
   // ── Validación cliente ─────────────────────────────────────────────────────
   const required: { parts: FieldParts; msg: string; test?: (v: string) => boolean }[] = [
@@ -115,7 +129,7 @@ export function renderWaitlist(root: Element): void {
   );
   check.input.addEventListener('change', () => check.field.classList.remove('has-error'));
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     note.className = 'aa-form__note';
     note.textContent = '';
@@ -124,10 +138,35 @@ export function renderWaitlist(root: Element): void {
       note.textContent = 'Revisa los campos marcados.';
       return;
     }
-    // TODO: POST a Google Sheets (Apps Script web app) al cablear la integración.
-    note.classList.add('is--success');
-    note.textContent = '¡Listo! Te avisaremos antes del lanzamiento.';
-    form.reset();
+
+    const payload = {
+      name: nameParts.input.value.trim(),
+      email: emailParts.input.value.trim(),
+      company: companyParts.input.value.trim(),
+      role: roleParts.input.value.trim(),
+      phone: phoneParts.input.value.trim(),
+      company_url: honeypot.value, // honeypot
+    };
+
+    submit.setAttribute('disabled', '');
+    note.textContent = 'Enviando…';
+    try {
+      const res = await fetch(WAITLIST_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = (await res.json().catch(() => null)) as { ok?: boolean } | null;
+      if (!res.ok || !data?.ok) throw new Error('request_failed');
+      note.classList.add('is--success');
+      note.textContent = '¡Listo! Te avisaremos antes del lanzamiento.';
+      form.reset();
+    } catch {
+      note.classList.add('is--error');
+      note.textContent = 'No se pudo enviar. Intenta de nuevo en un momento.';
+    } finally {
+      submit.removeAttribute('disabled');
+    }
   });
 
   // ── Sección (strip claro, contrasta con el CTA final oscuro) ───────────────
@@ -138,7 +177,7 @@ export function renderWaitlist(root: Element): void {
 
   const section = renderSection({
     theme: 'light',
-    children: [renderContainer({ size: 'sm', children: [content] })],
+    children: [renderContainer({ className: 'aa-container--card', children: [content] })],
   });
   section.id = 'aa-waitlist';
 

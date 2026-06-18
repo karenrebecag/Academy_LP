@@ -38,14 +38,21 @@
   background-color: transparent;
 }
 
-/* Strip "La tesis + Programa": un solo bloque obsidian (#201d1d) con texto claro.
-   Programa quita su padding-top para fundirse con La tesis en una sola tira. */
+/* Strip "La tesis + El problema": un solo bloque obsidian (#201d1d) con texto claro.
+   El problema quita su padding-top para fundirse con La tesis en una sola tira.
+   Programa conserva el mismo obsidian, pero ya aislado: lleva su padding completo. */
 .aa-landing #aa-tesis,
+.aa-landing #aa-problema,
 .aa-landing #aa-programa {
   --aa-bg: #201d1d;
   --aa-bg-subtle: #1a1717;
 }
-.aa-landing #aa-programa {
+/* Cabeza del strip: esquinas superiores redondeadas contra el manifiesto claro. */
+.aa-landing #aa-tesis {
+  border-top-left-radius: var(--aa-radius-xl);
+  border-top-right-radius: var(--aa-radius-xl);
+}
+.aa-landing #aa-problema {
   padding-top: 0;
 }
 
@@ -58,11 +65,8 @@
   --aa-fg-muted:  var(--aa-neutral-400);
   --aa-fg-subtle: var(--aa-neutral-600);
   --aa-border:    var(--aa-neutral-800);
-  background: #201d1d;
+  background: #201d1d; /* sobreescribe el blanco de .aa-container--card */
   color: var(--aa-fg);
-  border-radius: clamp(20px, 3vw, 32px);
-  padding: clamp(2rem, 5vw, 4.5rem);
-  box-shadow: 0 30px 80px rgba(10, 10, 10, 0.05);
 }
 
 /* Sección con video de fondo (CTA final): el video llena el strip y un overlay

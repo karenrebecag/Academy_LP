@@ -1,13 +1,5 @@
 /* atom-academy · form (lista de espera). Inputs/checkbox/submit del newsletter de OSMO. */
-
-/* Container del form como card gigante: blanco, esquinas redondeadas, sombra suave
-   (poco opaca y muy difusa). Flota sobre el bg fijo texturizado. */
-.aa-landing #aa-waitlist .aa-container {
-  background: #ffffff;
-  border-radius: clamp(20px, 3vw, 32px);
-  padding: clamp(2rem, 5vw, 4.5rem);
-  box-shadow: 0 30px 80px rgba(10, 10, 10, 0.008);
-}
+/* La forma de card del container la da .aa-container--card (layout.css). */
 
 .aa-landing .aa-form {
   display: flex;
@@ -82,7 +74,7 @@
 /* Checkbox — caja custom, accent al marcar (patrón radiocheck de OSMO) */
 .aa-landing .aa-check {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.65em;
   cursor: pointer;
 }
@@ -100,7 +92,6 @@
   flex: 0 0 auto;
   width: 1.35em;
   height: 1.35em;
-  margin-top: 0.1em;
   display: flex;
   align-items: center;
   justify-content: center;

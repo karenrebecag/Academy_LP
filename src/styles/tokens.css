@@ -111,6 +111,7 @@
 
   /* ─── Layout heights ──────────────────────────────────────────────────────── */
   --aa-nav-height: 4.625em; /* spacer superior del hero (alto de navbar OSMO) */
+  --aa-marquee-height: 1.75em; /* barra fija superior (botón de registro permanente) */
 
   /* ─── Form (estilo input de OSMO) ─────────────────────────────────────────── */
   --aa-input-height: 3em;

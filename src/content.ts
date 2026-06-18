@@ -14,6 +14,8 @@ export interface ProseContent {
   // `heading` se mantiene como fallback/SEO; si hay `rotate`, manda el rotatorio.
   rotate?: { before: string; words: string[]; after?: string; block?: boolean };
   paragraphs: string[];
+  // FAQ opcional embebido (acordeón) dentro del mismo bloque, antes del CTA.
+  faq?: { q: string; a: string }[];
   cta?: { label: string; href: string };
   // Layout con imagen lateral + superficie de color con textura (opcional).
   media?: {
@@ -129,7 +131,8 @@ const WAITLIST = '#aa-waitlist';
 const R2_BASE = 'https://pub-09dc8675a13e4b6d9ff1f7e15d49ade2.r2.dev';
 const CTA_VIDEO_KEY = 'bgvideoCTASectionATOMAcademy';
 
-// Secciones entre el hero (#1) y el form (#13). Orden del brief.
+// Secciones entre el hero y el cierre. Arco narrativo: por qué → tesis → problema
+// (agitar el dolor) → solución (visión/rol) → programa → para quién → urgencia → CTA.
 export const SECTIONS: SectionContent[] = [
   {
     kind: 'manifesto',
@@ -173,64 +176,40 @@ export const SECTIONS: SectionContent[] = [
     ],
   },
   {
-    kind: 'cards',
-    id: 'aa-programa',
+    kind: 'checklist',
+    id: 'aa-problema',
     theme: 'dark',
-    eyebrow: 'Programa',
-    heading: 'Lo que vas a aprender',
-    layout: 'slider',
-    cards: [
-      {
-        variant: 'dark',
-        tag: 'Base',
-        title: 'Fundamentos',
-        desc: 'Por qué WhatsApp es hoy uno de los canales clave de marketing y ventas en LATAM.',
-      },
-      {
-        variant: 'electric',
-        tag: 'Estrategia',
-        title: 'Estrategia conversacional',
-        desc: 'Journeys, flujos y mensajes que llevan al lead del interés a la compra.',
-      },
-      {
-        variant: 'purple',
-        tag: 'Captación',
-        title: 'Click to WhatsApp',
-        desc: 'Campañas que llevan al usuario directo a WhatsApp sin perder leads tras el primer mensaje.',
-      },
-      {
-        variant: 'neutral',
-        tag: 'IA',
-        title: 'Automatización e IA',
-        desc: 'IA para responder, calificar, agendar y recuperar leads sin perder personalización.',
-      },
-      {
-        variant: 'dark',
-        tag: 'Datos',
-        title: 'Trazabilidad y datos',
-        desc: 'Mide lo que pasa dentro de WhatsApp y conéctalo con tu CRM para optimizar campañas.',
-      },
-      {
-        variant: 'electric',
-        tag: 'Conversión',
-        title: 'Optimización comercial',
-        desc: 'Mejora tiempos de respuesta, prioriza leads y recupera oportunidades inactivas.',
-      },
+    eyebrow: 'El problema',
+    heading: 'De lead perdido a oportunidad convertida',
+    media: {
+      side: 'left',
+      src: 'https://pub-09dc8675a13e4b6d9ff1f7e15d49ade2.r2.dev/5a069a75-ec80-4f6a-8d01-6ceb09f53151-2026-06-18_6daced8ee45a9b8d02e25d24e7d1b682d9c1bbeea923e2be04b8b07fba430e43.webp',
+      alt: '',
+      // El lead se enfría: escribe varias veces y nadie responde a tiempo.
+      chat: [
+        { kind: 'in', text: 'Hola, me interesa 🙌', time: '18:40' },
+        { kind: 'in', text: '¿Me pasan precio?', time: '18:41' },
+        { kind: 'in', text: '¿Hola? ¿Siguen ahí?', time: '19:55' },
+        { kind: 'in', text: 'Sigo esperando 😐', time: '20:48' },
+        { kind: 'in', text: 'Bueno, busco otra opción', time: '21:30' },
+        { kind: 'in', text: 'Gracias de todos modos 👋', time: '21:31' },
+      ],
+    },
+    intro: [
+      'La mayoría de las empresas invierte en generar demanda, pero pierde oportunidades cuando el lead llega a WhatsApp.',
     ],
-  },
-  {
-    kind: 'audience',
-    theme: 'light',
-    eyebrow: 'Para quién',
-    heading: 'Esta formación es para ti si…',
-    intro: 'El WhatsApp Marketing es para quienes viven entre el marketing y la venta, y quieren convertir mejor cada conversación.',
+    marker: 'dot',
     items: [
-      'Trabajas en marketing, ventas, growth, performance, CRM, lifecycle, customer experience o revenue.',
-      'Gestionas campañas que llevan leads a WhatsApp.',
-      'Quieres reducir la pérdida de oportunidades después del clic.',
-      'Necesitas mejorar la conversión entre lead, conversación y venta.',
-      'Buscas integrar WhatsApp con IA, automatización, CRM y datos.',
-      'Quieres desarrollar una habilidad cada vez más importante para los equipos comerciales modernos.',
+      'Respuestas lentas.',
+      'Mensajes sin contexto.',
+      'Asesores saturados.',
+      'Falta de seguimiento.',
+      'Datos que no vuelven a las campañas.',
+      'Leads interesados que nunca llegan a ventas.',
+    ],
+    outro: [
+      'El WhatsApp Marketing existe para resolver ese problema.',
+      'No se trata de generar más conversaciones. Se trata de convertir mejor las conversaciones que ya estás generando.',
     ],
   },
   {
@@ -301,41 +280,65 @@ export const SECTIONS: SectionContent[] = [
     ],
   },
   {
-    kind: 'checklist',
-    id: 'aa-problema',
+    kind: 'cards',
+    id: 'aa-programa',
     theme: 'dark',
-    eyebrow: 'El problema',
-    heading: 'De lead perdido a oportunidad convertida',
-    surface: { color: '#0a290f', text: 'light' },
-    media: {
-      side: 'left',
-      src: 'https://pub-09dc8675a13e4b6d9ff1f7e15d49ade2.r2.dev/5a069a75-ec80-4f6a-8d01-6ceb09f53151-2026-06-18_6daced8ee45a9b8d02e25d24e7d1b682d9c1bbeea923e2be04b8b07fba430e43.webp',
-      alt: '',
-      // El lead se enfría: escribe varias veces y nadie responde a tiempo.
-      chat: [
-        { kind: 'in', text: 'Hola, me interesa 🙌', time: '18:40' },
-        { kind: 'in', text: '¿Me pasan precio?', time: '18:41' },
-        { kind: 'in', text: '¿Hola? ¿Siguen ahí?', time: '19:55' },
-        { kind: 'in', text: 'Sigo esperando 😐', time: '20:48' },
-        { kind: 'in', text: 'Bueno, busco otra opción', time: '21:30' },
-        { kind: 'in', text: 'Gracias de todos modos 👋', time: '21:31' },
-      ],
-    },
-    intro: [
-      'La mayoría de las empresas invierte en generar demanda, pero pierde oportunidades cuando el lead llega a WhatsApp.',
+    eyebrow: 'Programa',
+    heading: 'Lo que vas a aprender',
+    layout: 'slider',
+    cards: [
+      {
+        variant: 'dark',
+        tag: 'Base',
+        title: 'Fundamentos',
+        desc: 'Por qué WhatsApp es hoy uno de los canales clave de marketing y ventas en LATAM.',
+      },
+      {
+        variant: 'electric',
+        tag: 'Estrategia',
+        title: 'Estrategia conversacional',
+        desc: 'Journeys, flujos y mensajes que llevan al lead del interés a la compra.',
+      },
+      {
+        variant: 'purple',
+        tag: 'Captación',
+        title: 'Click to WhatsApp',
+        desc: 'Campañas que llevan al usuario directo a WhatsApp sin perder leads tras el primer mensaje.',
+      },
+      {
+        variant: 'neutral',
+        tag: 'IA',
+        title: 'Automatización e IA',
+        desc: 'IA para responder, calificar, agendar y recuperar leads sin perder personalización.',
+      },
+      {
+        variant: 'dark',
+        tag: 'Datos',
+        title: 'Trazabilidad y datos',
+        desc: 'Mide lo que pasa dentro de WhatsApp y conéctalo con tu CRM para optimizar campañas.',
+      },
+      {
+        variant: 'electric',
+        tag: 'Conversión',
+        title: 'Optimización comercial',
+        desc: 'Mejora tiempos de respuesta, prioriza leads y recupera oportunidades inactivas.',
+      },
     ],
-    marker: 'dot',
+  },
+  {
+    kind: 'audience',
+    id: 'aa-audience',
+    theme: 'light',
+    eyebrow: 'Para quién',
+    heading: 'Esta formación es para ti si…',
+    intro: 'El WhatsApp Marketing es para quienes viven entre el marketing y la venta, y quieren convertir mejor cada conversación.',
     items: [
-      'Respuestas lentas.',
-      'Mensajes sin contexto.',
-      'Asesores saturados.',
-      'Falta de seguimiento.',
-      'Datos que no vuelven a las campañas.',
-      'Leads interesados que nunca llegan a ventas.',
-    ],
-    outro: [
-      'El WhatsApp Marketing existe para resolver ese problema.',
-      'No se trata de generar más conversaciones. Se trata de convertir mejor las conversaciones que ya estás generando.',
+      'Trabajas en marketing, ventas, growth, performance, CRM, lifecycle, customer experience o revenue.',
+      'Gestionas campañas que llevan leads a WhatsApp.',
+      'Quieres reducir la pérdida de oportunidades después del clic.',
+      'Necesitas mejorar la conversión entre lead, conversación y venta.',
+      'Buscas integrar WhatsApp con IA, automatización, CRM y datos.',
+      'Quieres desarrollar una habilidad cada vez más importante para los equipos comerciales modernos.',
     ],
   },
   {
@@ -345,17 +348,9 @@ export const SECTIONS: SectionContent[] = [
     eyebrow: 'Primera generación · Lanzamiento en julio',
     heading: 'Sé parte de la primera generación de Expertos en WhatsApp Marketing',
     paragraphs: [
-      'La primera edición de la formación se lanza en julio. Durante esta etapa inicial, el acceso será exclusivo para las personas registradas en la lista de espera.',
-      'Quienes se registren primero recibirán prioridad para acceder a la formación, conocer el programa completo y asegurar su lugar antes de la apertura general.',
+      'La primera edición se lanza en julio con acceso prioritario para la lista de espera. Regístrate, conoce el programa completo y asegura tu lugar antes de la apertura general.',
     ],
-    cta: { label: 'Quiero entrar a la lista de espera', href: WAITLIST },
-  },
-  {
-    kind: 'faq',
-    theme: 'light',
-    eyebrow: 'Dudas',
-    heading: 'Preguntas frecuentes',
-    items: [
+    faq: [
       { q: '¿Cuándo se lanza la formación?', a: 'La formación se lanza en julio.' },
       {
         q: '¿Quiénes podrán acceder primero?',
@@ -374,6 +369,7 @@ export const SECTIONS: SectionContent[] = [
         a: 'Vas a entender cómo diseñar, implementar y optimizar estrategias de WhatsApp Marketing para captar, calificar, recuperar y convertir leads con mayor eficiencia.',
       },
     ],
+    cta: { label: 'Quiero entrar a la lista de espera', href: WAITLIST },
   },
   {
     kind: 'cta',

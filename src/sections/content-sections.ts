@@ -131,6 +131,12 @@ function buildProse(c: ProseContent): HTMLElement {
     );
   }
   c.paragraphs.forEach((p) => s.appendChild(fadeParagraph(p)));
+  if (c.faq?.length) {
+    s.appendChild(fadeEyebrow('Preguntas frecuentes'));
+    const acc = renderAccordion(c.faq);
+    acc.setAttribute('data-aa-fade', '');
+    s.appendChild(acc);
+  }
   if (c.cta) s.appendChild(ctaRow(c.cta));
   return c.media ? twoCol(s, c.media) : s;
 }
@@ -224,7 +230,7 @@ function moduleCardEl(card: {
   variant?: 'dark' | 'electric' | 'purple' | 'neutral';
 }): HTMLElement {
   const el = document.createElement('article');
-  el.className = 'aa-mod-card aa-slider__item';
+  el.className = 'aa-mod-card';
   if (card.variant) el.classList.add(`aa-mod-card--${card.variant}`);
 
   const before = document.createElement('div');
@@ -274,10 +280,23 @@ function buildCards(c: CardsContent): HTMLElement {
     slider.className = 'aa-slider';
     slider.setAttribute('data-aa-slider', '');
     slider.setAttribute('data-aa-fade', '');
+    // A11y: región enfocable y navegable por teclado (flechas / Home / End).
+    slider.setAttribute('role', 'group');
+    slider.setAttribute('aria-roledescription', 'carrusel');
+    slider.setAttribute('aria-label', c.heading);
+    slider.setAttribute('tabindex', '0');
+    slider.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight Home End');
     const track = document.createElement('div');
     track.className = 'aa-slider__track';
     track.setAttribute('data-aa-slider-track', '');
-    c.cards.forEach((card) => track.appendChild(moduleCardEl(card)));
+    // Slot estable (flex item) + cara que se mueve dentro: el sway desplaza la cara
+    // sin alterar la geometría del slot (lo que observa el IntersectionObserver).
+    c.cards.forEach((card) => {
+      const slot = document.createElement('div');
+      slot.className = 'aa-slider__item';
+      slot.appendChild(moduleCardEl(card));
+      track.appendChild(slot);
+    });
     slider.appendChild(track);
     s.appendChild(slider);
     return s;
@@ -368,8 +387,12 @@ export function renderContentSections(root: Element): void {
     const bgVideo = c.kind === 'cta' ? c.bgVideo : undefined;
     const media = mediaOf(c);
     const surface = surfaceOf(c);
+    // Cards flotantes: info (superficie blanca) y generación (obsidian, vía section-theme).
+    // Comparten el ancho default del footer y el comportamiento strip en móvil.
+    const isCard = c.kind === 'info' || c.id === 'aa-generacion';
     const container = renderContainer({
-      size: media ? 'default' : sizeFor(c.kind),
+      size: media || isCard ? 'default' : sizeFor(c.kind),
+      className: isCard ? 'aa-container--card' : undefined,
       children: [buildInner(c)],
     });
     const section = renderSection({
