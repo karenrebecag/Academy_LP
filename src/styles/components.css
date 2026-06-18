@@ -80,6 +80,7 @@
 /* Valores de OSMO: radius 1em, __before 130%, __content padding 2.5em, todo centrado. */
 .aa-landing .aa-mod-card {
   position: relative;
+  isolation: isolate; /* contiene el mix-blend-mode de la textura al área de la card */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,8 +98,17 @@
 /* Spacer que fija el aspect ratio (padding-% resuelve contra el ancho de la card) */
 .aa-landing .aa-mod-card__before { padding-top: 130%; }
 
-/* Capa de fondo (lista para una imagen/visual cover) */
-.aa-landing .aa-mod-card__bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Textura topográfica sobre el color de la card (mezclada, detrás del contenido) */
+.aa-landing .aa-mod-card__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}
 
 /* Capa de contenido sobre el fondo */
 .aa-landing .aa-mod-card__content {

@@ -15,6 +15,8 @@ import { initSmoothScroll, getLenis } from './ui/smooth-scroll';
 import { initSliders } from './ui/slider';
 import { initHeroChat } from './ui/hero-chat';
 import { initMomentumHover } from './ui/momentum-hover';
+import { initCursor } from './ui/cursor';
+import { renderBackground } from './ui/background';
 import { renderHero } from './sections/hero';
 import { renderContentSections } from './sections/content-sections';
 import { renderWaitlist } from './sections/waitlist';
@@ -58,9 +60,10 @@ function boot(): void {
     root.setAttribute('data-aa-lang', lang);
 
     // Cada sección se importa como módulo y recibe `root` como contenedor.
+    renderBackground(root); // bg fijo texturizado detrás de todo
     renderHero(root);
+    renderWaitlist(root); // form justo debajo del hero
     renderContentSections(root);
-    renderWaitlist(root);
 
     mount.replaceChildren(root);
     initAnchorScroll(root);
@@ -68,6 +71,7 @@ function boot(): void {
     initSliders(root);
     initHeroChat(root);
     initMomentumHover(root);
+    initCursor(root);
     initMotion(root);
   });
 }

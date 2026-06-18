@@ -135,7 +135,7 @@
   margin-bottom: 0.2em;
   font-weight: var(--aa-weight-bold);
   font-size: 0.8em;
-  color: var(--aa-color-purple);
+  color: var(--aa-accent-fg);
 }
 .aa-landing .aa-hero__bubble-text {
   margin: 0;
@@ -187,8 +187,24 @@
 
 /* ─── Responsive ─────────────────────────────────────────────────────────────── */
 @media screen and (max-width: 991px) {
-  .aa-landing .aa-hero__chats { display: none; }
+  /* El card apila en columna y centra verticalmente el stack (contenido + chat). */
+  .aa-landing .aa-hero__card { flex-direction: column; align-items: stretch; justify-content: center; }
   .aa-landing .aa-hero__content { max-width: 100%; }
+  /* Burbujas: de panel lateral absoluto a bloque en flujo, pegado al contenido.
+     position: relative para que el track absoluto se ancle a esta ventana. */
+  .aa-landing .aa-hero__chats {
+    position: relative;
+    top: auto;
+    right: auto;
+    transform: none;
+    width: 100%;
+    height: min(13rem, 32vh);
+  }
+  .aa-landing .aa-hero__chats-track {
+    left: clamp(2rem, 5vw, 5rem);
+    right: clamp(2rem, 5vw, 5rem);
+    bottom: 0.5rem;
+  }
   .aa-landing .aa-hero__overlay {
     background: linear-gradient(0deg, rgba(10, 10, 10, 0.6) 0%, rgba(10, 10, 10, 0.2) 60%);
   }
@@ -196,5 +212,6 @@
 
 @media screen and (max-width: 767px) {
   .aa-landing .aa-hero__card { min-height: min(82svh, 620px); }
+  .aa-landing .aa-hero__chats { height: min(11rem, 28vh); }
   .aa-landing .aa-hero__footnote { text-align: left; }
 }

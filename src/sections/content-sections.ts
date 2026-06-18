@@ -7,6 +7,8 @@ import { renderEyebrow, renderHeading, renderParagraph } from '../ui/text';
 import { renderButton } from '../ui/atoms/button';
 import { renderAccordion } from '../ui/accordion';
 import { buildManifesto } from './manifesto';
+import { buildAudience } from './audience';
+import contourTexture from '../assets/textures/contour.jpg';
 import {
   SECTIONS,
   type SectionContent,
@@ -192,7 +194,8 @@ function moduleCardEl(card: {
   const before = document.createElement('div');
   before.className = 'aa-mod-card__before';
   const bg = document.createElement('div');
-  bg.className = 'aa-mod-card__bg'; // slot listo para una imagen/visual de fondo
+  bg.className = 'aa-mod-card__bg'; // textura topográfica sobre el color (detrás del texto)
+  bg.style.backgroundImage = `url(${contourTexture})`;
 
   const content = document.createElement('div');
   content.className = 'aa-mod-card__content';
@@ -223,8 +226,12 @@ function moduleCardEl(card: {
 
 function buildCards(c: CardsContent): HTMLElement {
   const s = stack();
-  if (c.eyebrow) s.appendChild(fadeEyebrow(c.eyebrow));
-  s.appendChild(renderHeading({ size: 'l', text: c.heading, split: true }));
+  if (c.eyebrow) {
+    const eyebrow = fadeEyebrow(c.eyebrow);
+    eyebrow.classList.add('aa-text-center');
+    s.appendChild(eyebrow);
+  }
+  s.appendChild(renderHeading({ size: 'l', text: c.heading, split: true, className: 'aa-text-center' }));
 
   if (c.layout === 'slider') {
     const slider = document.createElement('div');
@@ -267,6 +274,31 @@ function buildCta(c: CtaContent): HTMLElement {
   return s;
 }
 
+function renderBgVideo(m: NonNullable<CtaContent['bgVideo']>): HTMLElement {
+  const wrap = document.createElement('div');
+  wrap.className = 'aa-section__media';
+  wrap.setAttribute('aria-hidden', 'true');
+
+  const video = document.createElement('video');
+  video.autoplay = true;
+  video.muted = true;
+  video.loop = true;
+  video.playsInline = true;
+  video.preload = 'metadata';
+  video.poster = m.poster;
+
+  const webm = document.createElement('source');
+  webm.src = m.webm;
+  webm.type = 'video/webm';
+  const mp4 = document.createElement('source');
+  mp4.src = m.mp4;
+  mp4.type = 'video/mp4';
+  video.append(webm, mp4);
+
+  wrap.appendChild(video);
+  return wrap;
+}
+
 function buildInner(c: SectionContent): HTMLElement {
   switch (c.kind) {
     case 'prose':
@@ -278,6 +310,8 @@ function buildInner(c: SectionContent): HTMLElement {
       return buildChecklist(c);
     case 'manifesto':
       return buildManifesto(c);
+    case 'audience':
+      return buildAudience(c);
     case 'info':
       return buildInfo(c);
     case 'faq':
@@ -288,16 +322,19 @@ function buildInner(c: SectionContent): HTMLElement {
 }
 
 function sizeFor(kind: SectionContent['kind']): ContainerSize {
-  if (kind === 'cards' || kind === 'info' || kind === 'manifesto') return 'default';
+  if (kind === 'cards' || kind === 'info' || kind === 'manifesto' || kind === 'audience') return 'default';
   if (kind === 'statement') return 'm';
   return 'sm';
 }
 
 export function renderContentSections(root: Element): void {
   SECTIONS.forEach((c) => {
+    const bgVideo = c.kind === 'cta' ? c.bgVideo : undefined;
+    const container = renderContainer({ size: sizeFor(c.kind), children: [buildInner(c)] });
     const section = renderSection({
       theme: c.theme,
-      children: [renderContainer({ size: sizeFor(c.kind), children: [buildInner(c)] })],
+      className: bgVideo ? 'aa-section--media' : undefined,
+      children: bgVideo ? [renderBgVideo(bgVideo), container] : [container],
     });
     if (c.id) section.id = c.id;
     root.appendChild(section);

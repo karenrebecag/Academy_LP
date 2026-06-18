@@ -14,11 +14,21 @@
 @import "./sections.css";
 @import "./accordion.css";
 @import "./manifesto.css";
+@import "./audience.css";
 @import "./info.css";
 @import "./slider.css";
 @import "./form.css";
 @import "./section-theme.css";
+@import "./cursor.css";
 @import "./lenis.css";
+
+/* Reset box-sizing: sin esto, width:100% + padding desbordan los contenedores y el
+   overflow-x: clip del root recorta el contenido por la derecha en todas las strips. */
+.aa-landing *,
+.aa-landing *::before,
+.aa-landing *::after {
+  box-sizing: border-box;
+}
 
 /* ─── Root wrapper ────────────────────────────────────────────────────────────── */
 .aa-landing {
@@ -29,6 +39,27 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip; /* contiene cualquier desborde horizontal (slider, scribble) sin romper sticky */
+  isolation: isolate; /* contexto de apilado: contiene el bg fijo (z-index -1) */
+}
+
+/* Fondo fijo global: color claro + textura topográfica con blend, pineado al viewport.
+   Detrás de todo (z-index -1, dentro del contexto de .aa-landing). Las strips light
+   van transparentes y lo dejan ver; las dark lo cubren con su color sólido. */
+.aa-landing .aa-bg-fixed {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  isolation: isolate; /* el multiply de la textura solo mezcla con el color de este bg */
+  background-color: #ffffff;
+  pointer-events: none;
+}
+.aa-landing .aa-bg-fixed__texture {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  background-size: 620px auto;
+  mix-blend-mode: multiply; /* deja ver las curvas topográficas sobre el blanco */
+  opacity: 0.05;
 }
 
 /* Dark theme global + section themes (strips) viven en section-theme.css. */

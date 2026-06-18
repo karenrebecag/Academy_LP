@@ -35,7 +35,7 @@
   flex-direction: column;
   align-items: center;
   gap: var(--aa-gap-s);
-  color: var(--aa-color-coral);
+  color: var(--aa-accent);
 }
 .aa-landing .aa-info__scribble-text {
   font-family: var(--aa-font-scribble);

@@ -95,6 +95,23 @@ export function initScrollReveals(scope: Element): void {
       scrollTrigger: { trigger: group, start: 'clamp(top 60%)', once: true },
     });
   });
+
+  // Pop escalonado (abanico de fotos): escala + sube con fade. Anima nodos internos
+  // [data-aa-pop-item] para no chocar con el transform de posición del padre.
+  scope.querySelectorAll<HTMLElement>('[data-aa-pop]').forEach((group) => {
+    if (group.closest('[data-aa-intro]')) return;
+    const items = group.querySelectorAll<HTMLElement>('[data-aa-pop-item]');
+    gsap.from(items, {
+      yPercent: 14,
+      scale: 0.9,
+      autoAlpha: 0,
+      transformOrigin: 'center',
+      duration: 0.9,
+      ease: 'expo.out',
+      stagger: { each: 0.12, from: 'end' },
+      scrollTrigger: { trigger: group, start: 'clamp(top 78%)', once: true },
+    });
+  });
 }
 
 export function initMotion(root: Element): void {

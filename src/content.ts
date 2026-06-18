@@ -42,6 +42,16 @@ export interface ChecklistContent {
   cta?: { label: string; href: string };
 }
 
+export interface AudienceContent {
+  kind: 'audience';
+  id?: string;
+  theme: SectionTheme;
+  eyebrow?: string;
+  heading: string;
+  intro?: string; // lead corto en la columna izquierda
+  items: string[]; // criterios "para ti si…" (lista con líneas)
+}
+
 export interface ManifestoContent {
   kind: 'manifesto';
   id?: string;
@@ -78,18 +88,25 @@ export interface CtaContent {
   heading: string;
   paragraphs?: string[];
   cta: { label: string; href: string };
+  // Video de fondo hospedado en R2 (no se inlina: el bundle es público en jsDelivr).
+  bgVideo?: { webm: string; mp4: string; poster: string };
 }
 
 export type SectionContent =
   | ProseContent
   | CardsContent
   | ChecklistContent
+  | AudienceContent
   | ManifestoContent
   | InfoContent
   | FaqContent
   | CtaContent;
 
 const WAITLIST = '#aa-waitlist';
+
+// Base pública del bucket de Cloudflare R2. Los assets comparten la misma key base.
+const R2_BASE = 'https://pub-09dc8675a13e4b6d9ff1f7e15d49ade2.r2.dev';
+const CTA_VIDEO_KEY = 'bgvideoCTASectionATOMAcademy';
 
 // Secciones entre el hero (#1) y el form (#13). Orden del brief.
 export const SECTIONS: SectionContent[] = [
@@ -120,6 +137,7 @@ export const SECTIONS: SectionContent[] = [
   },
   {
     kind: 'statement',
+    id: 'aa-tesis',
     theme: 'dark',
     eyebrow: 'La tesis',
     heading: 'WhatsApp Marketing no es enviar mensajes. Es diseñar conversaciones que venden.',
@@ -130,7 +148,8 @@ export const SECTIONS: SectionContent[] = [
   },
   {
     kind: 'cards',
-    theme: 'light',
+    id: 'aa-programa',
+    theme: 'dark',
     eyebrow: 'Programa',
     heading: 'Lo que vas a aprender',
     layout: 'slider',
@@ -174,11 +193,11 @@ export const SECTIONS: SectionContent[] = [
     ],
   },
   {
-    kind: 'checklist',
+    kind: 'audience',
     theme: 'light',
     eyebrow: 'Para quién',
     heading: 'Esta formación es para ti si…',
-    marker: 'check',
+    intro: 'El WhatsApp Marketing es para quienes viven entre el marketing y la venta, y quieren convertir mejor cada conversación.',
     items: [
       'Trabajas en marketing, ventas, growth, performance, CRM, lifecycle, customer experience o revenue.',
       'Gestionas campañas que llevan leads a WhatsApp.',
@@ -260,6 +279,7 @@ export const SECTIONS: SectionContent[] = [
   },
   {
     kind: 'prose',
+    id: 'aa-generacion',
     theme: 'light',
     eyebrow: 'Primera generación',
     heading: 'Sé parte de la primera generación de Expertos en WhatsApp Marketing',
@@ -302,5 +322,10 @@ export const SECTIONS: SectionContent[] = [
       'Regístrate en la lista de espera y sé parte de la primera formación para convertirte en Experto en WhatsApp Marketing.',
     ],
     cta: { label: 'Unirme a la lista de espera', href: WAITLIST },
+    bgVideo: {
+      webm: `${R2_BASE}/${CTA_VIDEO_KEY}.webm`,
+      mp4: `${R2_BASE}/${CTA_VIDEO_KEY}.mp4`,
+      poster: `${R2_BASE}/${CTA_VIDEO_KEY}.jpg`,
+    },
   },
 ];

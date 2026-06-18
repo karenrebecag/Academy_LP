@@ -4,3 +4,6 @@ node_modules/
 
 # Video local de preview (producción: Cloudflare)
 media/
+
+# Assets de video para subir a R2 (no van en el bundle público)
+cloudflare-r2/
