@@ -27,6 +27,44 @@ function clearError(field: HTMLElement, error: HTMLElement | null): void {
   if (error) error.textContent = '';
 }
 
+// Checkmark animado (transitions.dev #10): data-state="in" desde el inicio porque el
+// elemento se monta recién creado, así la animación corre al insertarse en el DOM.
+function buildSuccessCheck(): HTMLElement {
+  const wrap = document.createElement('span');
+  wrap.className = 'aa-form__check t-success-check';
+  wrap.setAttribute('data-state', 'in');
+  wrap.setAttribute('aria-hidden', 'true');
+  wrap.innerHTML =
+    '<svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" ' +
+    'stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  return wrap;
+}
+
+// Estados del aviso del form. Loading usa shimmer (transitions.dev #15) sobre data-text.
+function noteLoading(note: HTMLElement, msg: string): void {
+  note.className = 'aa-form__note is--loading t-shimmer';
+  note.setAttribute('data-text', msg);
+  note.textContent = msg;
+}
+function noteError(note: HTMLElement, msg: string): void {
+  note.className = 'aa-form__note is--error';
+  note.removeAttribute('data-text');
+  note.textContent = msg;
+}
+function noteSuccess(note: HTMLElement, msg: string): void {
+  note.className = 'aa-form__note is--success';
+  note.removeAttribute('data-text');
+  const text = document.createElement('span');
+  text.className = 'aa-form__note-text';
+  text.textContent = msg;
+  note.replaceChildren(buildSuccessCheck(), text);
+}
+function noteReset(note: HTMLElement): void {
+  note.className = 'aa-form__note';
+  note.removeAttribute('data-text');
+  note.textContent = '';
+}
+
 export function renderWaitlist(root: Element): void {
   // ── Intro ───────────────────────────────────────────────────────────────────
   const intro = document.createElement('div');
@@ -131,11 +169,9 @@ export function renderWaitlist(root: Element): void {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    note.className = 'aa-form__note';
-    note.textContent = '';
+    noteReset(note);
     if (!validate()) {
-      note.classList.add('is--error');
-      note.textContent = 'Revisa los campos marcados.';
+      noteError(note, 'Revisa los campos marcados.');
       return;
     }
 
@@ -149,7 +185,7 @@ export function renderWaitlist(root: Element): void {
     };
 
     submit.setAttribute('disabled', '');
-    note.textContent = 'Enviando…';
+    noteLoading(note, 'Enviando…');
     try {
       const res = await fetch(WAITLIST_ENDPOINT, {
         method: 'POST',
@@ -158,12 +194,10 @@ export function renderWaitlist(root: Element): void {
       });
       const data = (await res.json().catch(() => null)) as { ok?: boolean } | null;
       if (!res.ok || !data?.ok) throw new Error('request_failed');
-      note.classList.add('is--success');
-      note.textContent = '¡Listo! Te avisaremos antes del lanzamiento.';
+      noteSuccess(note, '¡Listo! Te avisaremos antes del lanzamiento.');
       form.reset();
     } catch {
-      note.classList.add('is--error');
-      note.textContent = 'No se pudo enviar. Intenta de nuevo en un momento.';
+      noteError(note, 'No se pudo enviar. Intenta de nuevo en un momento.');
     } finally {
       submit.removeAttribute('disabled');
     }
