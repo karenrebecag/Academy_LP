@@ -345,7 +345,7 @@ export const SECTIONS: SectionContent[] = [
     kind: 'prose',
     id: 'aa-generacion',
     theme: 'light',
-    eyebrow: 'Primera generación · Lanzamiento en julio',
+    eyebrow: 'Primera generación · Julio 2026',
     heading: 'Sé parte de la primera generación de Expertos en WhatsApp Marketing',
     paragraphs: [
       'La primera edición se lanza en julio con acceso prioritario para la lista de espera. Regístrate, conoce el programa completo y asegura tu lugar antes de la apertura general.',
