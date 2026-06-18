@@ -23,6 +23,7 @@
 @import "./form.css";
 @import "./footer.css";
 @import "./marquee.css";
+@import "./navbar.css";
 @import "./section-theme.css";
 @import "./cursor.css";
 
@@ -57,7 +58,7 @@
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip; /* contiene cualquier desborde horizontal (slider, scribble) sin romper sticky */
   isolation: isolate; /* contexto de apilado: contiene el bg fijo (z-index -1) */
-  padding-top: var(--aa-marquee-height); /* deja sitio a la barra fija superior */
+  padding-top: calc(var(--aa-marquee-height) + var(--aa-navbar-height)); /* sitio para marquee + navbar fijos */
 }
 
 /* Fondo fijo global: color claro + textura topográfica con blend, pineado al viewport.

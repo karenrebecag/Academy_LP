@@ -19,6 +19,7 @@ import { initCursor } from './ui/cursor';
 import { initRotatingText } from './ui/rotating-text';
 import { renderBackground } from './ui/background';
 import { renderMarquee, initMarquee } from './ui/marquee';
+import { renderNavbar, initNavbar } from './sections/navbar';
 import { initMetaTheme } from './ui/meta-theme';
 import { renderHero } from './sections/hero';
 import { renderContentSections } from './sections/content-sections';
@@ -63,6 +64,7 @@ function boot(): void {
     // Cada sección se importa como módulo y recibe `root` como contenedor.
     renderBackground(root); // bg fijo texturizado detrás de todo
     renderMarquee(root); // barra fija superior (botón de registro permanente)
+    renderNavbar(root); // navbar blanca de marca bajo el marquee
     renderHero(root);
     renderContentSections(root);
     renderWaitlist(root);
@@ -82,6 +84,7 @@ function boot(): void {
     initCursor(root);
     initRotatingText(root);
     initMarquee(root);
+    initNavbar(root);
     initMetaTheme(root);
     initMotion(root);
   });
