@@ -50,3 +50,9 @@
 }
 .aa-landing .aa-navbar__logo--atom { height: clamp(1.5rem, 2.8vw, 1.95rem); }
 .aa-landing .aa-navbar__logo--meta { height: clamp(2.25rem, 4.2vw, 2.9rem); }
+
+/* CTA del navbar un punto más chico que el tamaño base del botón. */
+.aa-landing .aa-navbar__inner > .aa-button {
+  transform: scale(0.8);
+  transform-origin: right center;
+}
