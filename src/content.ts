@@ -15,6 +15,14 @@ export interface ProseContent {
   rotate?: { before: string; words: string[]; after?: string; block?: boolean };
   paragraphs: string[];
   cta?: { label: string; href: string };
+  // Layout con imagen lateral + superficie de color con textura (opcional).
+  media?: {
+    side: 'left' | 'right';
+    src?: string;
+    alt?: string;
+    chat?: { kind: 'in' | 'out'; text: string; time: string }[]; // burbujas WhatsApp sobre la foto
+  };
+  surface?: { color: string; text?: 'light' | 'dark' };
 }
 
 export interface CardsContent {
@@ -43,6 +51,14 @@ export interface ChecklistContent {
   marker?: 'check' | 'dot';
   outro?: string[];
   cta?: { label: string; href: string };
+  // Layout con imagen lateral + superficie de color con textura (opcional).
+  media?: {
+    side: 'left' | 'right';
+    src?: string;
+    alt?: string;
+    chat?: { kind: 'in' | 'out'; text: string; time: string }[]; // burbujas WhatsApp sobre la foto
+  };
+  surface?: { color: string; text?: 'light' | 'dark' };
 }
 
 export interface AudienceContent {
@@ -219,9 +235,30 @@ export const SECTIONS: SectionContent[] = [
   },
   {
     kind: 'prose',
+    id: 'aa-vision',
     theme: 'dark',
     eyebrow: 'La visión',
     heading: 'El nuevo rol que las empresas van a necesitar',
+    surface: { color: '#25d366', text: 'dark' },
+    media: {
+      side: 'right',
+      src: 'https://pub-09dc8675a13e4b6d9ff1f7e15d49ade2.r2.dev/young-woman-sitting-indoors-with-camera-and-plants-2026-03-25-00-44-37-utc_4f3b97c7a1c234f0c5642e46019cb9e156219e01d4663ddab5f36e6cf94c37e9.webp',
+      alt: '',
+      // Demo del rol en acción: un WhatsApp Marketer atiende y cierra un lead real.
+      chat: [
+        { kind: 'in', text: 'Hola, vi su anuncio 👀', time: '12:01' },
+        { kind: 'out', text: '¡Hola! 👋 ¿Te cuento cómo funciona?', time: '12:01' },
+        { kind: 'in', text: 'Sí, porfa', time: '12:02' },
+        { kind: 'out', text: 'Conectamos tu anuncio → WhatsApp → cierre', time: '12:02' },
+        { kind: 'in', text: '¿Y si no contesto a tiempo?', time: '12:03' },
+        { kind: 'out', text: 'La IA responde al instante y te avisa ⚡', time: '12:03' },
+        { kind: 'in', text: 'Me interesa 🔥 ¿precio?', time: '12:05' },
+        { kind: 'out', text: 'Hoy con cupo de lanzamiento: 30% off', time: '12:05' },
+        { kind: 'in', text: 'Lo quiero 🙌', time: '12:06' },
+        { kind: 'out', text: 'Te paso el link para agendar 📅', time: '12:06' },
+        { kind: 'in', text: '¡Agendado! ✅', time: '12:08' },
+      ],
+    },
     paragraphs: [
       'Las empresas ya tienen especialistas en pauta. Especialistas en CRM. Especialistas en automatización. Especialistas en ventas.',
       'Pero entre el clic y la venta hay una zona crítica: la conversación. Ahí es donde nace el rol del WhatsApp Marketer.',
@@ -265,9 +302,25 @@ export const SECTIONS: SectionContent[] = [
   },
   {
     kind: 'checklist',
+    id: 'aa-problema',
     theme: 'dark',
     eyebrow: 'El problema',
     heading: 'De lead perdido a oportunidad convertida',
+    surface: { color: '#6840ff', text: 'light' },
+    media: {
+      side: 'left',
+      src: 'https://pub-09dc8675a13e4b6d9ff1f7e15d49ade2.r2.dev/5a069a75-ec80-4f6a-8d01-6ceb09f53151-2026-06-18_6daced8ee45a9b8d02e25d24e7d1b682d9c1bbeea923e2be04b8b07fba430e43.webp',
+      alt: '',
+      // El lead se enfría: escribe varias veces y nadie responde a tiempo.
+      chat: [
+        { kind: 'in', text: 'Hola, me interesa 🙌', time: '18:40' },
+        { kind: 'in', text: '¿Me pasan precio?', time: '18:41' },
+        { kind: 'in', text: '¿Hola? ¿Siguen ahí?', time: '19:55' },
+        { kind: 'in', text: 'Sigo esperando 😐', time: '20:48' },
+        { kind: 'in', text: 'Bueno, busco otra opción', time: '21:30' },
+        { kind: 'in', text: 'Gracias de todos modos 👋', time: '21:31' },
+      ],
+    },
     intro: [
       'La mayoría de las empresas invierte en generar demanda, pero pierde oportunidades cuando el lead llega a WhatsApp.',
     ],

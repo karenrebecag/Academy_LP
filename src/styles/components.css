@@ -1,68 +1,129 @@
-/* atom-academy · components. Button (patrón 038 OSMO), card, divider. */
+/* atom-academy · components. Button (OSMO Button 004: flip de chars), card, divider. */
 
-/* ─── Button (patrón OSMO: copias del label rotando sobre pivote lejano) ───────── */
+/* ─── Button 004 (flip 3D de caracteres en hover) ─────────────────────────────── */
 .aa-landing .aa-button {
-  --aa-btn-r: 20deg;        /* incremento de rotación por copia (button-rotate.ts) */
-  --aa-btn-y: 1100%;        /* pivote; lo recalcula JS según el largo del texto */
+  --aa-btn-radius: var(--aa-radius-pill);
+  --aa-btn-padding: 0.95em 1.5em;
+  --aa-btn-translate-y: 1.25em;
+  --aa-btn-focus-inset: -0.125em;
+  --aa-btn-click-scale: 0.955 0.925;
+  --aa-btn-ease-hover: cubic-bezier(0.675, 0.15, 0.1, 1);
+  --aa-btn-ease-click: cubic-bezier(0.4, 0, 0.2, 1);
+  --aa-btn-ease-focus: cubic-bezier(0.32, 0.72, 0, 1);
+  --aa-btn-color: var(--aa-accent-fg);
+  --aa-btn-bg: var(--aa-accent);
+  --aa-btn-focus: var(--aa-fg);
 
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 3em;
-  padding: 0 1.5em;
-  color: var(--aa-accent-fg);
+  color: var(--aa-btn-color);
   font-family: inherit;
   font-size: inherit;
   font-weight: var(--aa-weight-bold);
   line-height: 1;
-  white-space: nowrap;
   text-decoration: none;
-  border: none;
-  border-radius: var(--aa-radius-pill);
-  cursor: pointer;
-  overflow: hidden;
   user-select: none;
+  -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
+  background-color: transparent;
   outline: none;
-}
-.aa-landing .aa-button--sm { height: 2.5em; padding: 0 1.2em; font-size: 0.875em; }
-
-.aa-landing .aa-button__bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: var(--aa-accent);
-  border-radius: inherit;
-  pointer-events: none;
-  transition: background var(--aa-duration-s) var(--aa-ease-out);
-}
-.aa-landing .aa-button--secondary { color: var(--aa-bg); }
-.aa-landing .aa-button--secondary .aa-button__bg { background: var(--aa-fg); }
-.aa-landing .aa-button--ghost { color: var(--aa-fg); }
-.aa-landing .aa-button--ghost .aa-button__bg { background: transparent; border: 1.5px solid var(--aa-border); }
-
-/* Wrap: apila las copias del label en la misma celda de grid */
-.aa-landing .aa-button__label-wrap {
+  padding: 0;
+  display: inline-grid;
   position: relative;
-  z-index: 1;
-  display: grid;
-  place-items: center;
+  cursor: pointer;
+  transition: scale 0.15s var(--aa-btn-ease-click);
 }
-.aa-landing .aa-button__label {
-  grid-area: 1 / 1;
-  display: flex;
-  align-items: center;
-  letter-spacing: -0.01em;
-  line-height: 1;
-  transform-origin: 50% var(--aa-btn-y);
-}
-/* Pre-rotación: copia 1 visible, copia 2 fuera de vista (entra en el hover) */
-.aa-landing .aa-button__label:nth-of-type(1) { transform: rotate(calc(var(--aa-btn-r) * 0)); }
-.aa-landing .aa-button__label:nth-of-type(2) { transform: rotate(calc(var(--aa-btn-r) * -1)); }
+.aa-landing .aa-button--sm { --aa-btn-padding: 0.72em 1.15em; font-size: 0.875em; }
 
-.aa-landing .aa-button:focus-visible {
-  box-shadow: 0 0 0 2px var(--aa-bg), 0 0 0 4px var(--aa-accent);
+/* Variantes por color (mapeadas a tokens del DS) */
+.aa-landing .aa-button--secondary { --aa-btn-color: var(--aa-bg); --aa-btn-bg: var(--aa-fg); }
+.aa-landing .aa-button--ghost { --aa-btn-color: var(--aa-fg); --aa-btn-bg: transparent; }
+.aa-landing .aa-button--ghost .aa-button__bg { border: 1.5px solid var(--aa-border); }
+
+/* Anillo de focus accesible */
+.aa-landing .aa-button::after {
+  content: '';
+  display: block;
+  position: absolute;
+  inset: var(--aa-btn-focus-inset);
+  border-radius: var(--aa-btn-radius);
+  transition: box-shadow 0.3s var(--aa-btn-ease-focus);
+  pointer-events: none;
+  z-index: 1;
+}
+.aa-landing .aa-button:focus-visible::after { box-shadow: 0 0 0 0.125em var(--aa-btn-focus); }
+.aa-landing .aa-button:active { scale: var(--aa-btn-click-scale); }
+
+.aa-landing .aa-button__inner {
+  pointer-events: none;
+  border-radius: var(--aa-btn-radius);
+  z-index: 1;
+  padding: var(--aa-btn-padding);
+  grid-area: 1 / 1;
+  display: grid;
+  justify-items: center;
+}
+.aa-landing .aa-button__text {
+  perspective: 10em;
+  transform-style: preserve-3d;
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+.aa-landing .aa-button__split-char {
+  --base-delay: 0.05s;
+  --max-extra: 2.9s;
+  --t: calc(var(--index) / max(var(--max-index), 1));
+  --curve: sin(calc(var(--t) * 1.5deg));
+  --delay: calc(var(--base-delay) + (var(--curve) * var(--max-extra)));
+  --rot-t: calc(var(--index) / max(var(--max-index), 1));
+  --rot-curve: sin(calc(var(--rot-t) * 30deg));
+  --rot-sign: clamp(-1, var(--signed-index), 1);
+  --rot-max: 36deg;
+  display: inline-block;
+}
+.aa-landing .aa-button__text.is--default .aa-button__split-char {
+  transition: transform 0.325s var(--aa-btn-ease-hover), translate 0.425s var(--aa-btn-ease-hover),
+    rotate 0.45s var(--aa-btn-ease-hover), opacity 0.15s ease-out;
+}
+.aa-landing .aa-button__text.is--hover .aa-button__split-char {
+  transition: transform 0.35s var(--aa-btn-ease-hover), translate 0.35s var(--aa-btn-ease-hover),
+    rotate 0.35s var(--aa-btn-ease-hover), opacity 0.15s 0.1s ease-out;
+  rotate: 1 0 0 -72deg;
+  transform: rotateZ(calc(var(--rot-sign) * var(--rot-curve) * var(--rot-max) * -1)) scale(0.65);
+  translate: calc(var(--signed-index) * 0.125em) calc(var(--aa-btn-translate-y) * 1) 0;
+  opacity: 0;
+}
+.aa-landing .aa-button__bg {
+  background-color: var(--aa-btn-bg);
+  border-radius: var(--aa-btn-radius);
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  transition: background-color var(--aa-duration-s) var(--aa-btn-ease-hover);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .aa-landing .aa-button__split-char { will-change: transform, translate, rotate, opacity; }
+
+  .aa-landing .aa-button:is(:hover, :focus-visible) .aa-button__text.is--default .aa-button__split-char {
+    translate: calc(var(--signed-index) * 0.125em) calc(var(--aa-btn-translate-y) * -1) 0;
+    rotate: 1 0 0 72deg;
+    transform: rotateZ(calc(var(--rot-sign) * var(--rot-curve) * var(--rot-max) * -1)) scale(0.65);
+    opacity: 0;
+    transition: transform 0.35s var(--delay) var(--aa-btn-ease-hover),
+      translate 0.35s var(--delay) var(--aa-btn-ease-hover),
+      rotate 0.35s var(--delay) var(--aa-btn-ease-hover),
+      opacity 0.15s calc(var(--delay) + 0.1s) ease-out;
+  }
+  .aa-landing .aa-button:is(:hover, :focus-visible) .aa-button__text.is--hover .aa-button__split-char {
+    translate: 0 0 0;
+    rotate: 1 0 0 0deg;
+    transform: rotateZ(0deg) scale(1);
+    opacity: 1;
+    transition: transform 0.325s calc(var(--delay) + 0.05s) var(--aa-btn-ease-hover),
+      translate 0.425s calc(var(--delay) + 0.05s) var(--aa-btn-ease-hover),
+      rotate 0.45s calc(var(--delay) + 0.05s) var(--aa-btn-ease-hover),
+      opacity 0.15s calc(var(--delay) + 0.075s) ease-out;
+  }
 }
 
 /* ─── Card ────────────────────────────────────────────────────────────────────── */

@@ -97,7 +97,7 @@
   height: 100%;
   border-radius: 0.7em;
   overflow: hidden;
-  box-shadow: 0 18px 44px rgba(10, 10, 10, 0.2);
+  box-shadow: 0 18px 44px rgba(10, 10, 10, 0.02);
 }
 .aa-landing .aa-aud__media img {
   width: 100%;

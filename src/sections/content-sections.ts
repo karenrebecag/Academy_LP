@@ -6,6 +6,7 @@ import { renderSection, renderContainer, renderGrid, type ContainerSize } from '
 import { renderEyebrow, renderHeading, renderParagraph } from '../ui/text';
 import { renderButton } from '../ui/atoms/button';
 import { renderRotatingHeading } from '../ui/rotating-text';
+import { renderChatTrack } from '../ui/chat';
 import { renderAccordion } from '../ui/accordion';
 import { buildManifesto } from './manifesto';
 import { buildAudience } from './audience';
@@ -72,6 +73,59 @@ function ctaRow(cta: { label: string; href: string }): HTMLElement {
   return row;
 }
 
+type ChatBubble = { kind: 'in' | 'out'; text: string; time: string };
+type MediaCfg = { side: 'left' | 'right'; src?: string; alt?: string; chat?: ChatBubble[] };
+
+// Overlay de conversación WhatsApp animada sobre la foto (motor en ui/chat.ts).
+function buildChatOverlay(chat: ChatBubble[]): HTMLElement {
+  const wrap = document.createElement('div');
+  wrap.className = 'aa-split__chat';
+  wrap.setAttribute('aria-hidden', 'true');
+  wrap.appendChild(renderChatTrack(chat));
+  return wrap;
+}
+type SurfaceCfg = { color: string; text?: 'light' | 'dark' };
+
+function mediaOf(c: SectionContent): MediaCfg | undefined {
+  return c.kind === 'prose' || c.kind === 'statement' || c.kind === 'checklist' ? c.media : undefined;
+}
+function surfaceOf(c: SectionContent): SurfaceCfg | undefined {
+  return c.kind === 'prose' || c.kind === 'statement' || c.kind === 'checklist' ? c.surface : undefined;
+}
+
+// Envuelve el contenido (texto) + una imagen lateral en dos columnas. side=left → imagen
+// primero. Si no hay src, deja un placeholder (para cambiar por la imagen real después).
+function twoCol(textEl: HTMLElement, media: MediaCfg): HTMLElement {
+  const row = document.createElement('div');
+  row.className = `aa-split aa-split--${media.side}`;
+
+  const textCol = document.createElement('div');
+  textCol.className = 'aa-split__text';
+  textCol.appendChild(textEl);
+
+  const mediaCol = document.createElement('div');
+  mediaCol.className = 'aa-split__media';
+  mediaCol.setAttribute('data-aa-fade', '');
+  if (media.src) {
+    const img = document.createElement('img');
+    img.src = media.src;
+    img.alt = media.alt ?? '';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    mediaCol.appendChild(img);
+    if (media.chat?.length) mediaCol.appendChild(buildChatOverlay(media.chat));
+  } else {
+    mediaCol.classList.add('aa-split__media--placeholder');
+    const label = document.createElement('span');
+    label.className = 'aa-split__placeholder-label';
+    label.textContent = 'Imagen';
+    mediaCol.appendChild(label);
+  }
+
+  row.append(textCol, mediaCol);
+  return row;
+}
+
 function buildProse(c: ProseContent): HTMLElement {
   const center = c.kind === 'statement';
   const s = stack(center);
@@ -98,7 +152,7 @@ function buildProse(c: ProseContent): HTMLElement {
   }
   c.paragraphs.forEach((p) => s.appendChild(fadeParagraph(p)));
   if (c.cta) s.appendChild(ctaRow(c.cta));
-  return s;
+  return c.media ? twoCol(s, c.media) : s;
 }
 
 function buildList(c: ChecklistContent): HTMLElement {
@@ -128,7 +182,7 @@ function buildChecklist(c: ChecklistContent): HTMLElement {
   s.appendChild(buildList(c));
   (c.outro ?? []).forEach((p) => s.appendChild(fadeParagraph(p)));
   if (c.cta) s.appendChild(ctaRow(c.cta));
-  return s;
+  return c.media ? twoCol(s, c.media) : s;
 }
 
 // Layout info — réplica de la sección .info de OSMO: columna gráfica + columna grande
@@ -355,13 +409,37 @@ function sizeFor(kind: SectionContent['kind']): ContainerSize {
 export function renderContentSections(root: Element): void {
   SECTIONS.forEach((c) => {
     const bgVideo = c.kind === 'cta' ? c.bgVideo : undefined;
-    const container = renderContainer({ size: sizeFor(c.kind), children: [buildInner(c)] });
+    const media = mediaOf(c);
+    const surface = surfaceOf(c);
+    const container = renderContainer({
+      size: media ? 'default' : sizeFor(c.kind),
+      children: [buildInner(c)],
+    });
     const section = renderSection({
       theme: c.theme,
-      className: bgVideo ? 'aa-section--media' : undefined,
+      className: bgVideo ? 'aa-section--media' : surface ? 'aa-section--surface' : undefined,
       children: bgVideo ? [renderBgVideo(bgVideo), container] : [container],
     });
     if (c.id) section.id = c.id;
+    if (surface) {
+      // Superficie de color + textura: el color va en --aa-bg, la textura en ::before.
+      section.style.setProperty('--aa-section-tex', `url(${contourTexture})`);
+      section.style.setProperty('--aa-bg', surface.color);
+      if (surface.text === 'dark') {
+        // Texto oscuro sobre color claro (ej. verde): negros con jerarquía por opacidad.
+        section.style.setProperty('--aa-fg', 'var(--aa-neutral-950)');
+        section.style.setProperty('--aa-fg-muted', 'color-mix(in srgb, var(--aa-neutral-950) 82%, transparent)');
+        section.style.setProperty('--aa-fg-subtle', 'color-mix(in srgb, var(--aa-neutral-950) 64%, transparent)');
+        section.style.setProperty('--aa-border', 'color-mix(in srgb, var(--aa-neutral-950) 18%, transparent)');
+      } else {
+        // Texto claro sobre color saturado (ej. morado): blancos con jerarquía por opacidad
+        // (el gris muted por defecto da bajo contraste).
+        section.style.setProperty('--aa-fg', '#ffffff');
+        section.style.setProperty('--aa-fg-muted', 'rgba(255, 255, 255, 0.85)');
+        section.style.setProperty('--aa-fg-subtle', 'rgba(255, 255, 255, 0.66)');
+        section.style.setProperty('--aa-border', 'rgba(255, 255, 255, 0.22)');
+      }
+    }
     root.appendChild(section);
   });
 }

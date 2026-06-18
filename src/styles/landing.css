@@ -15,6 +15,8 @@
 @import "./accordion.css";
 @import "./manifesto.css";
 @import "./audience.css";
+@import "./split.css";
+@import "./chat.css";
 @import "./rotating-text.css";
 @import "./info.css";
 @import "./slider.css";
@@ -60,7 +62,7 @@
   background-repeat: repeat;
   background-size: 620px auto;
   mix-blend-mode: multiply; /* deja ver las curvas topográficas sobre el blanco */
-  opacity: 0.05;
+  opacity: 0.12;
 }
 
 /* Dark theme global + section themes (strips) viven en section-theme.css. */

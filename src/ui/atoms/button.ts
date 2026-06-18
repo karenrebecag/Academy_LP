@@ -1,6 +1,6 @@
-// Botón — estructura del botón de OSMO: .aa-button > bg + label-wrap con dos copias
-// del label apiladas. El hover (rotación alrededor de pivote lejano) lo maneja
-// button-rotate.ts, activado por el atributo data-aa-btn-rotate.
+// Botón — OSMO "Button 004": dos copias del label (default visible + hover oculta),
+// cada una spliteada en chars por initButton004(). El flip 3D de caracteres en hover
+// es 100% CSS; el JS solo parte el texto y setea --index/--signed-index/--max-index.
 
 export interface ButtonOptions {
   label: string;
@@ -16,7 +16,7 @@ export function renderButton(opts: ButtonOptions): HTMLElement {
   const tag = href ? 'a' : 'button';
   const el = document.createElement(tag) as HTMLAnchorElement | HTMLButtonElement;
   el.className = `aa-button aa-button--${variant} aa-button--${size}`;
-  el.setAttribute('data-aa-btn-rotate', '');
+  el.setAttribute('data-aa-btn004', '');
 
   if (href && el instanceof HTMLAnchorElement) {
     el.href = href;
@@ -24,23 +24,26 @@ export function renderButton(opts: ButtonOptions): HTMLElement {
     if (target === '_blank') el.rel = 'noopener noreferrer';
   }
 
+  const inner = document.createElement('span');
+  inner.className = 'aa-button__inner';
+
+  // default = visible/accesible; hover = copia que entra (aria-hidden).
+  const def = document.createElement('span');
+  def.className = 'aa-button__text is--default';
+  def.setAttribute('data-aa-btn004-text', '');
+  def.textContent = label;
+
+  const hov = document.createElement('span');
+  hov.className = 'aa-button__text is--hover';
+  hov.setAttribute('aria-hidden', 'true');
+  hov.setAttribute('data-aa-btn004-text', '');
+  hov.textContent = label;
+
+  inner.append(def, hov);
+
   const bg = document.createElement('span');
   bg.className = 'aa-button__bg';
 
-  const wrap = document.createElement('span');
-  wrap.className = 'aa-button__label-wrap';
-
-  // Dos copias del label: una visible, una pre-rotada que entra en el hover.
-  for (let i = 0; i < 2; i++) {
-    const lbl = document.createElement('span');
-    lbl.className = 'aa-button__label';
-    if (i > 0) lbl.setAttribute('aria-hidden', 'true');
-    const inner = document.createElement('span');
-    inner.textContent = label;
-    lbl.appendChild(inner);
-    wrap.appendChild(lbl);
-  }
-
-  el.append(bg, wrap);
+  el.append(inner, bg);
   return el;
 }

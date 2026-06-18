@@ -10,7 +10,7 @@
 // reveal duration 1.2 / ease expo.out / stagger 0.05; scroll start "clamp(top 80%)" once.
 
 import { gsap, ScrollTrigger, SplitText, STAGGER } from './gsap-env';
-import { initButtonRotate } from './button-rotate';
+import { initButton004 } from './button004';
 
 // Timeline de entrada de OSMO: duration 1.2, ease expo.out (distinto del default 0.6/osmo).
 const ENTER_DURATION = 1.2;
@@ -115,7 +115,7 @@ export function initScrollReveals(scope: Element): void {
 }
 
 export function initMotion(root: Element): void {
-  initButtonRotate(root);
+  initButton004(root);
   playIntro(root);
   initScrollReveals(root);
   // Recalcula posiciones de los triggers (importante con Lenis activo).
