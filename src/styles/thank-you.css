@@ -103,3 +103,28 @@
     animation: none;
   }
 }
+
+/* TY Page standalone — servida en data-aa-ty-mount. Reusa .aa-ty__inner y el check;
+   centra el contenido a viewport completo en flujo normal (sin overlay fijo). */
+.aa-landing .aa-typage {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--aa-padding-xxl) var(--aa-padding-l);
+}
+
+.aa-landing .aa-typage .aa-ty__inner > * {
+  animation: aa-ty-in var(--aa-duration-l) var(--aa-ease) both;
+}
+.aa-landing .aa-typage .aa-ty__inner > *:nth-child(1) { animation-delay: 0.05s; }
+.aa-landing .aa-typage .aa-ty__inner > *:nth-child(2) { animation-delay: 0.15s; }
+.aa-landing .aa-typage .aa-ty__inner > *:nth-child(3) { animation-delay: 0.22s; }
+.aa-landing .aa-typage .aa-ty__inner > *:nth-child(4) { animation-delay: 0.30s; }
+.aa-landing .aa-typage .aa-ty__inner > *:nth-child(5) { animation-delay: 0.40s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .aa-landing .aa-typage .aa-ty__inner > * {
+    animation: none;
+  }
+}

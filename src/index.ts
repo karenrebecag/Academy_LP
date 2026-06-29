@@ -24,8 +24,14 @@ import { initMetaTheme } from './ui/meta-theme';
 import { renderHero } from './sections/hero';
 import { renderContentSections } from './sections/content-sections';
 import { renderWaitlist } from './sections/waitlist';
-import { renderThankYou } from './sections/thank-you';
+import { renderThankYouPage } from './sections/thank-you-page';
 import { renderFooter } from './sections/footer';
+
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
 
 // Scroll suave para anclas internas (#id) con scroll nativo.
 function initAnchorScroll(root: HTMLElement): void {
@@ -69,7 +75,6 @@ function boot(): void {
     renderHero(root);
     renderContentSections(root);
     renderWaitlist(root);
-    renderThankYou(root);
     renderFooter(root);
     // El form vive entre "Para quién" (audience) y "Primera generación" (#aa-generacion).
     const waitlist = root.querySelector('#aa-waitlist');
@@ -89,6 +94,26 @@ function boot(): void {
     initNavbar(root);
     initMetaTheme(root);
     initMotion(root);
+  });
+
+  // Página de gracias standalone (su propia URL en Elementor). Mismo loader/bundle;
+  // solo cambia el mount. Dispara el pixel CONTACT de Meta al cargar.
+  const tyMounts = document.querySelectorAll<HTMLElement>('[data-aa-ty-mount]');
+  tyMounts.forEach((mount) => {
+    const theme = resolveTheme(mount.dataset.aaTheme);
+    const lang = resolveLang(mount.dataset.aaLang);
+
+    const root = document.createElement('div');
+    root.className = 'aa-landing';
+    root.setAttribute('data-aa-theme', theme);
+    root.setAttribute('data-aa-lang', lang);
+
+    renderBackground(root);
+    renderThankYouPage(root);
+
+    mount.replaceChildren(root);
+
+    if (typeof window.fbq === 'function') window.fbq('track', 'Contact');
   });
 }
 

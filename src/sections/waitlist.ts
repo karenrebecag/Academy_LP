@@ -8,10 +8,13 @@ import { renderEyebrow, renderHeading, renderParagraph } from '../ui/text';
 import { renderField, type FieldParts } from '../ui/atoms/input';
 import { renderCheckbox } from '../ui/atoms/checkbox';
 import { renderButton } from '../ui/atoms/button';
-import { showThankYou } from './thank-you';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+()\d\s-]{6,}$/;
+
+// Página de gracias (Elementor) a la que se redirige tras el registro exitoso. Allí
+// se dispara el pixel CONTACT de Meta al cargar (ver src/index.ts, data-aa-ty-mount).
+const TY_REDIRECT_URL = 'https://atomchat.io/whatsapp-academy-thank-you-page/';
 
 // Endpoint público del proxy en Vercel (Edge Function → Google Sheets). NO es secreto:
 // el secreto (URL/token del Apps Script) vive en env vars de Vercel. Reemplaza el
@@ -195,9 +198,11 @@ export function renderWaitlist(root: Element): void {
       });
       const data = (await res.json().catch(() => null)) as { ok?: boolean } | null;
       if (!res.ok || !data?.ok) throw new Error('request_failed');
-      noteSuccess(note, '¡Listo! Te avisaremos antes del lanzamiento.');
-      form.reset();
-      window.setTimeout(showThankYou, 1200);
+      noteSuccess(note, '¡Listo! Te llevamos a tu confirmación…');
+      // Conserva el query string (UTM) para mantener la atribución en la TY page.
+      window.setTimeout(() => {
+        window.location.href = TY_REDIRECT_URL + window.location.search;
+      }, 800);
     } catch {
       noteError(note, 'No se pudo enviar. Intenta de nuevo en un momento.');
     } finally {
