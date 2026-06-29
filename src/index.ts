@@ -24,6 +24,7 @@ import { initMetaTheme } from './ui/meta-theme';
 import { renderHero } from './sections/hero';
 import { renderContentSections } from './sections/content-sections';
 import { renderWaitlist } from './sections/waitlist';
+import { renderThankYou } from './sections/thank-you';
 import { renderFooter } from './sections/footer';
 
 // Scroll suave para anclas internas (#id) con scroll nativo.
@@ -68,6 +69,7 @@ function boot(): void {
     renderHero(root);
     renderContentSections(root);
     renderWaitlist(root);
+    renderThankYou(root);
     renderFooter(root);
     // El form vive entre "Para quién" (audience) y "Primera generación" (#aa-generacion).
     const waitlist = root.querySelector('#aa-waitlist');

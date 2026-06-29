@@ -8,6 +8,7 @@ import { renderEyebrow, renderHeading, renderParagraph } from '../ui/text';
 import { renderField, type FieldParts } from '../ui/atoms/input';
 import { renderCheckbox } from '../ui/atoms/checkbox';
 import { renderButton } from '../ui/atoms/button';
+import { showThankYou } from './thank-you';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+()\d\s-]{6,}$/;
@@ -196,8 +197,7 @@ export function renderWaitlist(root: Element): void {
       if (!res.ok || !data?.ok) throw new Error('request_failed');
       noteSuccess(note, '¡Listo! Te avisaremos antes del lanzamiento.');
       form.reset();
-      // Redirige en la misma pestaña tras mostrar el éxito un instante.
-      window.setTimeout(() => { window.location.href = 'https://atomchat.io/'; }, 1200);
+      window.setTimeout(showThankYou, 1200);
     } catch {
       noteError(note, 'No se pudo enviar. Intenta de nuevo en un momento.');
     } finally {

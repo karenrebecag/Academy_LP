@@ -1,0 +1,105 @@
+/* TY Page — overlay fijo activado con .is-visible tras submit exitoso del form. */
+
+@keyframes aa-ty-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.aa-landing .aa-ty {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--aa-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--aa-padding-xl) var(--aa-padding-l);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--aa-duration-m) var(--aa-ease),
+    visibility var(--aa-duration-m) var(--aa-ease);
+}
+
+.aa-landing .aa-ty.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.aa-landing .aa-ty__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--aa-gap-m);
+  max-width: 42em;
+}
+
+/* Check icon con animación de entrada escalonada */
+.aa-landing .aa-ty.is-visible .aa-ty__inner > * {
+  animation: aa-ty-in var(--aa-duration-l) var(--aa-ease) both;
+}
+.aa-landing .aa-ty.is-visible .aa-ty__inner > *:nth-child(1) { animation-delay: 0.05s; }
+.aa-landing .aa-ty.is-visible .aa-ty__inner > *:nth-child(2) { animation-delay: 0.15s; }
+.aa-landing .aa-ty.is-visible .aa-ty__inner > *:nth-child(3) { animation-delay: 0.22s; }
+.aa-landing .aa-ty.is-visible .aa-ty__inner > *:nth-child(4) { animation-delay: 0.30s; }
+.aa-landing .aa-ty.is-visible .aa-ty__inner > *:nth-child(5) { animation-delay: 0.40s; }
+
+.aa-landing .aa-ty__check {
+  width: 64px;
+  height: 64px;
+  color: var(--aa-fg);
+  flex-shrink: 0;
+  margin-bottom: var(--aa-gap-s);
+}
+
+.aa-landing .aa-ty__check svg {
+  width: 100%;
+  height: 100%;
+}
+
+.aa-landing .aa-ty__close {
+  position: absolute;
+  top: var(--aa-padding-m);
+  right: var(--aa-padding-m);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--aa-border);
+  border-radius: var(--aa-radius-pill);
+  color: var(--aa-fg);
+  cursor: pointer;
+  transition: background var(--aa-duration-xs) var(--aa-ease),
+              border-color var(--aa-duration-xs) var(--aa-ease);
+}
+
+.aa-landing .aa-ty__close:hover {
+  background: var(--aa-neutral-100);
+  border-color: var(--aa-neutral-300);
+}
+
+.aa-landing .aa-ty__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Párrafo en tono muted */
+.aa-landing .aa-ty__inner [class^="aa-p-"] {
+  color: var(--aa-fg-muted);
+}
+
+/* CTA con margen superior */
+.aa-landing .aa-ty__inner .aa-button {
+  margin-top: var(--aa-gap-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aa-landing .aa-ty.is-visible .aa-ty__inner > * {
+    animation: none;
+  }
+}
